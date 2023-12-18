@@ -67,6 +67,10 @@ nav ul li {
     text-decoration: underline;
 }
 
+a {
+    text-decoration: none;
+}
+
 .navbar img {
     cursor: pointer;
 }
