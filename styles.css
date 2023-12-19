@@ -8,13 +8,6 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-/* .header {
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    z-index: 100;
-} */
-
 .header .container .navbar .logo img {
     width: 125px;
 }
@@ -34,7 +27,7 @@ body {
     padding: 0 25px;
 }
 
-.navbar {
+.header .navbar {
     display: flex;
     align-items: center;
     padding: 20px;
@@ -43,36 +36,43 @@ body {
     z-index: 100;
 }
 
-nav {
+.header nav {
     flex: 1;
     text-align: right;
 }
 
-nav ul {
+.header nav ul {
     display: inline-block;
     list-style-type: none;
 }
 
-nav ul li {
+.header nav ul li {
     display: inline-block;
     margin-right: 20px;
 }
 
-.navbar a {
+.header .navbar a {
     text-decoration: none;
     color: #555;
 }
 
-.navbar a:hover {
+.header .navbar a:hover {
     text-decoration: underline;
 }
 
-a {
-    text-decoration: none;
+.header .menu-icon {
+    width: 28px;
+    margin-left: 20px;
+    display: none;
 }
 
-.navbar img {
+.header .navbar img {
     cursor: pointer;
+}
+
+
+a {
+    text-decoration: none;
 }
 
 p {
@@ -161,17 +161,17 @@ p {
 }
 
 
-.overlay {
+.categories .overlay {
     position: relative;
     overflow: hidden;
 }
 
-.overlay img {
+.categories .overlay img {
     width: 100%;
     display: block;
 }
 
-.overlay::before {
+.categories .overlay::before {
     content: "";
     position: absolute;
     top: 0;
@@ -183,11 +183,11 @@ p {
     transition: opacity 0.5s;
 }
 
-.overlay:hover::before {
+.categories .overlay:hover::before {
     opacity: 1;
 }
 
-.category-name {
+.categories .category-name {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -199,7 +199,7 @@ p {
     transition: opacity 0.5s;
 }
 
-.overlay:hover .category-name {
+.categories .overlay:hover .category-name {
     opacity: 1;
 }
 
@@ -210,7 +210,6 @@ p {
 
 .col-4 {
     flex-basis: 23%;
-    /* padding: 10px; */
     min-width: 200px;
     margin-bottom: 50px;
     cursor: pointer;
@@ -266,6 +265,10 @@ h4{
     background: radial-gradient(#ffffff, #ffd6d6);
     margin-top: 80px;
     padding: 30px 0;
+}
+
+.offer .row {
+    align-items: center;
 }
 
 .col-2 .offer-img {
@@ -409,11 +412,8 @@ ul {
     text-align: center;
 }
 
-.menu-icon {
-    width: 28px;
-    margin-left: 20px;
-    display: none;
-}
+
+/* ---------- Media Queries ---------- */
 
 @media only screen and (max-width: 800px){
     .navbar #menuItems {
