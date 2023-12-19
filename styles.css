@@ -92,6 +92,10 @@ p {
     justify-content: space-around;
 }
 
+.hero .container .row {
+    align-items: center;
+}
+
 .col-2 {
     flex-basis: 50%;
     min-width: 300px;
