@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Display mobile menu
     const menuItems = document.getElementById('menuItems');
-    const header = document.querySelector('.header');
-    const navbar = document.querySelector('.navbar');
-
     menuItems.style.maxHeight = '0px';
 
     document.getElementById('menuIcon').addEventListener('click', () => {
@@ -11,6 +9,18 @@ document.addEventListener('DOMContentLoaded', function() {
             menuItems.style.maxHeight = '200px';
         } else {
             menuItems.style.maxHeight = '0px';
+        }
+    });
+
+    // Change the main product image
+    const smallImagesContainer = document.getElementById('smallImages');
+    const mainProductImage = document.getElementById('mainProduct');
+
+    smallImagesContainer.addEventListener('click', function(event) {
+        var target = event.target.closest('.small-img-col');
+        if (target) {
+            var newSrc = target.querySelector('img').src;
+            mainProductImage.src = newSrc;
         }
     });
 });
