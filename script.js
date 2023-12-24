@@ -16,11 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const smallImagesContainer = document.getElementById('smallImages');
     const mainProductImage = document.getElementById('mainProduct');
 
-    smallImagesContainer.addEventListener('click', function(event) {
-        var target = event.target.closest('.small-img-col');
-        if (target) {
-            var newSrc = target.querySelector('img').src;
-            mainProductImage.src = newSrc;
-        }
-    });
+    if (smallImagesContainer && mainProductImage){
+        smallImagesContainer.addEventListener('click', function(event) {
+            var target = event.target.closest('.small-img-col');
+            if (target) {
+                var newSrc = target.querySelector('img').src;
+                mainProductImage.src = newSrc;
+            }
+        });
+    }
 });
