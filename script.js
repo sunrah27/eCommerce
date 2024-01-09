@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     const product = products.find(product => product.pSku === sku);
                     if (product) {
                         const productDetailsHTML = `
-                            <!-- Update this HTML structure based on your product-details.html -->
                             <div class="col-2">
                                 <img id="mainProduct" src="./assets/${product.pImages[0]}">
                                 <div class="small-img-row" id="smallImages">
@@ -90,6 +89,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="col-2">
                                 <p>${product.pType}</p>
                                 <h1>${product.pFullName}</h1>
+                                <div class="rating">
+                                    ${generateStarIcons(product.pStar)}
+                                </div>
                                 <h4>£${product.pPrice.toFixed(2)}</h4>
                                 <select name="selectSize" id="selectSize">
                                     ${product.pSize.map(size => `<option value="${size}">${size}</option>`).join('')}
@@ -118,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             });
                         }
                     } else {
-                        // Handle case where product is not found
                         console.error('Product not found');
                     }
                 })
