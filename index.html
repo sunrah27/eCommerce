@@ -21,7 +21,7 @@
     <script src="https://kit.fontawesome.com/cec2b045b4.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./styles.css">
     <script src="./script.js"></script>
-    <title>Red Store</title>
+    <title>Red Store</title> 
 </head>
 <body>
 
@@ -35,14 +35,16 @@
                 </div>
                 <nav id="navMenu">
                     <ul id="menuItems">
-                        <li><a href="">Home</a></li>
-                        <li><a href="">Products</a></li>
-                        <li><a href="">About</a></li>
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./products.html">Products</a></li>
                         <li><a href="">Contact</a></li>
                         <li><a href="">Account</a></li>
                     </ul>
                 </nav>
-                <img src="./assets/cart.png" alt="cart">
+                <div class="cartContainer">
+                    <img src="./assets/cart.png" alt="cart">
+                    <div class="cartCounter">10</div>
+                </div>
                 <img class="menu-icon" id="menuIcon" src="./assets/menu.png" alt="mobile menu">
             </div>
         </div>
@@ -96,54 +98,62 @@
 
     <div class="small-container">
         <h2 class="title">Featured Products</h2>
-        <div class="row">
+        <div class="row alignTop">
             <div class="col-4">
-                <img src="./assets/product-1.jpg" alt="Red Printed T-Shirt">
-                <h4>Red Printed T-Shirt</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
+                <div class="product" id="10010"><a href="./product-details.html?sku=10010">
+                    <img src="./assets/10011.webp" alt="Borg Lined Shacket">
+                    <h4>Borg Lined Shacket</h4>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <p>£64.99</p></a>
                 </div>
-                <p>£49.99</p>
             </div>
             <div class="col-4">
-                <img src="./assets/product-2.jpg" alt="Black Shoes">
-                <h4>Black Shoes</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
-                    <i class="fa fa-star-o"></i>
+                <div class="product" id="10030"><a href="./product-details.html?sku=10030">
+                    <img src="./assets/10031.webp" alt="Basket Textured Crew Neck Jumper">
+                    <h4>Basket Textured Crew Neck Jumper</h4>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <p>£35.99</p></a>
                 </div>
-                <p>£49.99</p>
             </div>
             <div class="col-4">
-                <img src="./assets/product-3.jpg" alt="Grey jogging bottoms">
-                <h4>Grey jogging bottoms</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
+                <div class="product" id="10110"><a href="./product-details.html?sku=10110">
+                    <img src="./assets/10111.webp" alt="Premium Textured Overhead Hoodie">
+                    <h4>Premium Textured Overhead Hoodie</h4>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                    </div>
+                    <p>£34.99</p></a>
                 </div>
-                <p>£49.99</p>
             </div>
             <div class="col-4">
-                <img src="./assets/product-4.jpg" alt="Blue Printed T-Shirt">
-                <h4>Blue Printed T-Shirt</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
+                <div class="product" id="10120"><a href="./product-details.html?sku=10120">
+                    <img src="./assets/10121.webp" alt="Nike Club Pullover Hoodie">
+                    <h4>Nike Club Pullover Hoodie</h4>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <p>£59.99</p></a>
                 </div>
-                <p>£49.99</p>
             </div>
         </div>
     </div>
@@ -152,103 +162,7 @@
 
     <div class="small-container">
         <h2 class="title">Latest Products</h2>
-        <div class="row">
-            <div class="col-4">
-                <img src="./assets/product-5.jpg" alt="Grey Shoes">
-                <h4>Grey Shoes</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
-            <div class="col-4">
-                <img src="./assets/product-6.jpg" alt="Black Puma T-shirt">
-                <h4>Black Puma T-shirt</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
-            <div class="col-4">
-                <img src="./assets/product-7.jpg" alt="3pk HRX Socks">
-                <h4>3pk HRX Socks</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
-            <div class="col-4">
-                <img src="./assets/product-8.jpg" alt="Fossial Black Watch">
-                <h4>Fossial Black Watch</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
-            <div class="col-4">
-                <img src="./assets/product-9.jpg" alt="Roadstar Grey Watch">
-                <h4>Roadstar Grey Watch</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
-            <div class="col-4">
-                <img src="./assets/product-10.jpg" alt="Red and Black Running Shoes">
-                <h4>Red and Black Running Shoes</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
-            <div class="col-4">
-                <img src="./assets/product-11.jpg" alt="Light Grey Shoes">
-                <h4>Light Grey Shoes</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
-            <div class="col-4">
-                <img src="./assets/product-12.jpg" alt="Black Jogging Bottoms">
-                <h4>Black Jogging Bottoms</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <p>£49.99</p>
-            </div>
+        <div class="row alignTop" id="latestProductsRow">
         </div>
     </div>
 
@@ -384,7 +298,6 @@
             <p class="copyright">Copyright 2023 - Res Store</p>
         </div>
     </div>
-
 
 </body>
 </html>

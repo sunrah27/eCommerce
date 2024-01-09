@@ -11,10 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cec2b045b4.js" crossorigin="anonymous"></script>
     <script src="./script.js"></script>
-    <title>Red Store | Products</title>
+    <title>Red Store | Cart</title>
 </head>
 <body>
-
+    
     <!-------- Header -------->
 
     <div class="header">
@@ -40,24 +40,78 @@
         </div>
     </div>
 
-    <!-------- All products -------->
+    <!-------- Cart -------->
 
-    <div class="small-container">
+    <div class="small-container cartPage">
+        <table>
+            <tr>
+                <th>Produce</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="./assets/buy-1.jpg">
+                        <div>
+                            <p>Red Printed T-shirt</p>
+                            <small>Price: £49.00</small>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+                </td>
+                <td><input type="number" value="1" class="quantity"></td>
+                <td>£49.99</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="./assets/buy-2.jpg">
+                        <div>
+                            <p>Red Printed T-shirt</p>
+                            <small>Price: £49.00</small>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+                </td>
+                <td><input type="number" value="1" class="quantity"></td>
+                <td>£49.99</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="./assets/buy-3.jpg">
+                        <div>
+                            <p>Red Printed T-shirt</p>
+                            <small>Price: £49.00</small>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+                </td>
+                <td><input type="number" value="1" class="quantity"></td>
+                <td>£49.99</td>
+            </tr>
+        </table>
 
-        <div class="row row-2">
-            <h2>All Products</h2>
-            <select name="sort" id="sort">
-                <option value="default">Default</option>
-                <option value="price">Price</option>
-                <option value="popularity">Popular</option>
-                <option value="rating">Rating</option>
-                <option value="sale">Sale</option>
-            </select>
+        <div class="totalPrice">
+            <table>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>£124.98</td>
+                </tr>
+                <tr>
+                    <td>Tax</td>
+                    <td>£24.99</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>£149.97</td>
+                </tr>
+            </table>
         </div>
-
-        <div class="row" id="productRow"></div>
-
     </div>
+
+
 
     <!-------- Footer -------->
 
