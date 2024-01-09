@@ -13,6 +13,7 @@ Site has following tasks completed:
 - [x] Refactor Product Details page to populate using sku passed va URI
 - [x] Refactor Homepage to pull product data from producDB
 - [x] Refactor Related Products on Product Details page based on pType
-- [ ] Code Cart functionality
+- [x] Code Cart functionality
 - [ ] Create userDB.json
 - [ ] Code Account login
+- [ ] Code filter feature in the Products Page

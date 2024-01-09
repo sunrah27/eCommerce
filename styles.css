@@ -416,7 +416,7 @@ ul {
     border: none;
     background: #aaa;
     height: 1px;
-    margin: 20px 0;;
+    margin: 20px 0;
 }
 
 .copyright {
@@ -586,9 +586,11 @@ td {
 }
 
 td input {
-    width: 40px;
-    height: 30px;
     padding: 5px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
 }
 
 td a {
@@ -597,7 +599,7 @@ td a {
 
 td img {
     width: 80px;
-    height: 80px;
+    /* height: 80px; */
     margin-right: 10px;
 }
 
@@ -616,6 +618,9 @@ td:last-child, th:last-child {
     text-align: right;
 }
 
+#cartItem {
+    min-height: 50vh;
+}
 /* ---------- Media Queries ---------- */
 
 @media only screen and (max-width: 800px){

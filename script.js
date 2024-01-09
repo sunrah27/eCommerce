@@ -1,10 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Cart counter display
-    const cartCounter = document.querySelector('.cartCounter');
-
-    // Check if innerHTML value is 0, then hide the cartCounter
-    cartCounter.style.display = cartCounter.innerHTML === '0' ? 'none' : 'block';
-
     // Display mobile menu
     const menuItems = document.getElementById('menuItems');
     menuItems.style.maxHeight = '0px';
@@ -17,7 +11,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Check if the current page is index.html
+    // Check and update the cart counter across every page.
+    updateCartCounter();
+
+    /////////////////////////////////////////////
+    // Check if the current page is index.html //
+    /////////////////////////////////////////////
     const isHomePage = window.location.pathname.includes('index.html');
     if (isHomePage) {
         fetchDataFromJSON('./productdb.json')
@@ -55,7 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Check if the current page is products.html
+    ////////////////////////////////////////////////
+    // Check if the current page is products.html //
+    ////////////////////////////////////////////////
     const isProductsPage = window.location.pathname.includes('products.html');
     if (isProductsPage) {
         // Populate Products page with products from productdb.json
@@ -90,7 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching products:', error));
     }
 
-    // Check if the current page is product-details.html
+    ///////////////////////////////////////////////////////
+    // Check if the current page is product-details.html //
+    ///////////////////////////////////////////////////////
     const isProductDetailsPage = window.location.pathname.includes('product-details.html');
     if (isProductDetailsPage) {
         // Populate Product details based on sku
@@ -134,8 +137,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <select name="selectSize" id="selectSize">
                                     ${product.pSize.map(size => `<option value="${size}">${size}</option>`).join('')}
                                 </select>
-                                <input type="number" value="1">
-                                <a href="#" class="btn">Add to cart</a>
+                                <input id="quantity" type="number" value="1">
+                                <a id="addToCartBtn" href="" class="btn">Add to cart</a>
                                 <h3>Product details <i class="fa fa-indent"></i></h3>
                                 <p>${product.pDetail}</p></br>
                                 <ul class="pDetailList">${product.pDetailList.map(item => `<li>${item}</li>`).join('')}</ul></br>
@@ -144,11 +147,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         `;
                         productDetailsRow.innerHTML = productDetailsHTML;
 
-                        // Change the main product image on product-details.html
+                        // add Event Listeners
                         const smallImagesContainer = document.getElementById('smallImages');
                         const mainProductImage = document.getElementById('mainProduct');
+                        const addToCartBtn = document.getElementById('addToCartBtn');
 
-                        if (smallImagesContainer && mainProductImage) {
+                        // Change the main product image on product-details.html
+                        if (smallImagesContainer) {
                             smallImagesContainer.addEventListener('click', function (event) {
                                 var target = event.target.closest('.small-img-col');
                                 if (target) {
@@ -156,24 +161,82 @@ document.addEventListener('DOMContentLoaded', function () {
                                     mainProductImage.src = newSrc;
                                 }
                             });
+                        } else {
+                            console.error('Element with ID "smallImagesContainer" and "mainProductImage" not found.');
                         }
-                    } else {
+
+                        if (addToCartBtn) {
+                            addToCartBtn.addEventListener('click', function (event) {
+                                event.preventDefault();
+                                // console.log('Add to cart button clicked');
+
+                                // Get the selected size and quantity
+                                const sizeSelect = document.getElementById('selectSize');
+                                const quantity = parseInt(document.getElementById('quantity').value, 10) || 0;
+
+                                const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].value;
+                                // console.log('Selected size:', sizeSelect.options[sizeSelect.selectedIndex].value);
+
+
+                                // Add the item to the cart
+                                addToCart(product, selectedSize, quantity);
+        
+                                // You can also provide feedback to the user, such as a confirmation message
+                                alert(`${quantity} ${product.pFullName}(s) size ${product.pSize} added to the cart!`);
+                            });
+                        } else {
+                            console.error('Element with ID "addToCartBtn" not found.');
+                        }
+                        } else {
                         console.error('Product not found');
                     }
                 })
                 .catch(error => console.error('Error fetching product details:', error));
         }
+        
+        function addToCart(product, size, quantity) {
+            // Get the existing cart data from local storage or initialize an empty array
+            let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        
+            // Check if the product is already in the cart
+            const existingItem = cartItems.find(item => item.pSku === product.pSku && item.size === size);
+
+
+            if (existingItem) {
+                // Update the quantity and size if the product is already in the cart
+                existingItem.quantity += quantity;
+            } else {
+                // Add a new item to the cart
+                const newItem = {
+                    pSku: product.pSku,
+                    size: size,
+                    quantity: quantity,
+                };
+                cartItems.push(newItem);
+            }
+        
+            // Save the updated cart data to local storage
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+        
+            // Update the cart counter display
+            updateCartCounter();
+        }        
 
         // Function to fetch and display related products
         function fetchRelatedProducts(currentSku) {
+            
+            // console.log('Fetching related products for SKU:', currentSku);
+
             fetchDataFromJSON('./productdb.json')
                 .then(products => {
                     // Find the current product
                     const currentProduct = products.find(product => product.pSku === currentSku);
-        
+
                     if (currentProduct) {
                         // Filter products based on the pType of the current product
                         const relatedProducts = products.filter(product => product.pType === currentProduct.pType && product.pSku !== currentSku);
+
+                        // console.log('Related Products:', relatedProducts);
         
                         // Display up to 4 related products
                         const maxRelatedProducts = 4;
@@ -213,6 +276,12 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchProductDetails(sku);
         fetchRelatedProducts(sku);
     }
+
+    const isCartPage = window.location.pathname.includes('cart.html');
+    if (isCartPage) {
+        // console.log('landed on cart page');
+        displayCartItems();
+    }
 });
 
 // function to fetch data from JSON file
@@ -246,4 +315,125 @@ function generateStarIcons(rating) {
         starsHTML += '<i class="fa fa-star-o"></i>';
     }
     return starsHTML;
+}
+
+// Function to update the cart counter display
+function updateCartCounter() {
+    const cartCounter = document.querySelector('.cartCounter');
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Update the cart counter based on the total quantity in the cart
+    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+    cartCounter.innerHTML = totalQuantity.toString();
+
+    // Show or hide the cart counter based on whether there are items in the cart
+    cartCounter.style.display = totalQuantity === 0 ? 'none' : 'block';
+}
+
+function displayCartItems() {
+    const cartItemsContainer = document.getElementById('tableBody');
+    const totalPriceContainer = document.querySelector('.totalPrice');
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    let total = 0;
+
+    if (cartItems.length > 0) {
+        // Populate cart items dynamically
+        cartItems.forEach(item => {
+            fetchDataFromJSON('./productdb.json')
+                .then(products => {
+                    const product = products.find(p => p.pSku === item.pSku);
+                    console.log('product object:', product);
+                    if (product) {
+                        const cartItemHTML = `
+                            <tr>
+                                <td>
+                                    <div class="cart-info">
+                                        <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
+                                        <div>
+                                            <p>${product.pFullName}</p>
+                                            <small>Price: £${product.pPrice.toFixed(2)}</small>
+                                            <a href="" onclick="removeCartItem('${product.pSku}', '${item.size}')">Remove</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${item.size}</td>
+                                <td>${item.quantity}</td>
+                                <td>£${(item.quantity * product.pPrice).toFixed(2)}</td>
+                            </tr>
+                        `;
+                        
+                        console.log('item.quantity:', item.quantity, 'product.pPrice', product.pPrice);
+                        // Calculate the total price for the cart
+                        total += (item.quantity * product.pPrice);
+                        console.log('total:',total);
+
+                        // Append the cart item HTML to the cart items container
+                        cartItemsContainer.innerHTML += cartItemHTML;
+
+                        console.log('total2:',total);
+                        // Calculate tax and total
+                        const tax = total * 0.2; // 20% of the subtotal
+                        const subtotal = total * 0.8;
+        
+                        // Update the total price table HTML
+                        const totalPriceHTML = `
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Subtotal</td>
+                                        <td>£${(subtotal).toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax @ 20%</td>
+                                        <td>£${tax.toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>£${total.toFixed(2)}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `;
+                        totalPriceContainer.innerHTML = totalPriceHTML;
+                    } else {
+                        console.error('Product not found for SKU:', item.pSku);
+                    }
+                })
+                .catch(error => console.error('Error fetching product data:', error));
+        });
+    }
+}
+
+function removeCartItem(sku, size) {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Remove the item from the cart based on SKU and size
+    cartItems = cartItems.filter(item => !(item.pSku === sku && item.size === size));
+
+    // Save the updated cart data to local storage
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    // Update the cart display on the cart page
+    displayCartItems();
+    updateCartCounter();
+}
+
+function updateCartItemQuantity(sku, size, newQuantity) {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Find the item in the cart based on SKU and size
+    const cartItem = cartItems.find(item => item.pSku === sku && item.size === size);
+
+    if (cartItem) {
+        // Update the quantity of the item
+        cartItem.quantity = parseInt(newQuantity, 10) || 0;
+
+        // Save the updated cart data to local storage
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+
+        // Update the cart display on the cart page
+        displayCartItems();
+        updateCartCounter();
+    }
 }

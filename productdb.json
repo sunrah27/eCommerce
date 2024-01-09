@@ -124,8 +124,8 @@
     "pDetailMaterials": "100% Recycled polyester.",
     "pPrice": 35.99,
     "pSize": ["S", "M", "L", "XL", "XXL"],
-    "pType": "jumper",
-    "pImages": ["10031.webp", "10032.webp", "10033.webp", "10034.webp"],
+    "pType": "t-shirt",
+    "pImages": ["10101.webp", "10102.webp", "10103.webp", "10104.webp"],
     "pStar": 4.0,
     "pDate": 20230110
   },

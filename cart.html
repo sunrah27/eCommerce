@@ -31,9 +31,9 @@
                         <li><a href="">Account</a></li>
                     </ul>
                 </nav>
-                <div class="cartContainer">
+                <div class="cartContainer"><a href="./cart.html">
                     <img src="./assets/cart.png" alt="cart">
-                    <div class="cartCounter">10</div>
+                    <div class="cartCounter">10</div></a>
                 </div>
                 <img class="menu-icon" id="menuIcon" src="./assets/menu.png" alt="mobile menu">
             </div>
@@ -42,76 +42,20 @@
 
     <!-------- Cart -------->
 
-    <div class="small-container cartPage">
+    <div class="container cartPage" id="cartItem">
         <table>
-            <tr>
-                <th>Produce</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-            </tr>
-            <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="./assets/buy-1.jpg">
-                        <div>
-                            <p>Red Printed T-shirt</p>
-                            <small>Price: £49.00</small>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td><input type="number" value="1" class="quantity"></td>
-                <td>£49.99</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="./assets/buy-2.jpg">
-                        <div>
-                            <p>Red Printed T-shirt</p>
-                            <small>Price: £49.00</small>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td><input type="number" value="1" class="quantity"></td>
-                <td>£49.99</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="./assets/buy-3.jpg">
-                        <div>
-                            <p>Red Printed T-shirt</p>
-                            <small>Price: £49.00</small>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td><input type="number" value="1" class="quantity"></td>
-                <td>£49.99</td>
-            </tr>
+            <tbody id="tableBody">
+                <tr id="tableHeader">
+                    <th>Produce</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+            </tbody>
         </table>
-
         <div class="totalPrice">
-            <table>
-                <tr>
-                    <td>Subtotal</td>
-                    <td>£124.98</td>
-                </tr>
-                <tr>
-                    <td>Tax</td>
-                    <td>£24.99</td>
-                </tr>
-                <tr>
-                    <td>Total</td>
-                    <td>£149.97</td>
-                </tr>
-            </table>
         </div>
     </div>
-
-
 
     <!-------- Footer -------->
 
