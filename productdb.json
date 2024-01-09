@@ -9,7 +9,7 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "jacket",
     "pImages": ["10011.webp", "10012.webp", "10013.webp", "10014.webp"],
-    "pStar": 4.5,
+    "pStar": 5,
     "pDate": 20230101
   },
   {
@@ -22,7 +22,7 @@
     "pSize": ["S", "M", "L"],
     "pType": "jacket",
     "pImages": ["10021.webp", "10022.webp", "10023.webp", "10024.webp"],
-    "pStar": 4,
+    "pStar": 4.5,
     "pDate": 20230102
   },
   {
@@ -35,20 +35,20 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "jumper",
     "pImages": ["10031.webp", "10032.webp", "10033.webp", "10034.webp"],
-    "pStar": 3.5,
+    "pStar": 3,
     "pDate": 20230103
   },
   {
     "pSku": "10040",
     "pFullName": "Faux Suede Shacket",
-    "pDetail": "Layer up in style with our dark green suede overshirt. This shacket style piece is crafted from supersoft suede and features button-through fastening and twin pockets. Perfect for light layering during the chillier months, pair with chinos and trainers for a stylish look. ",
+    "pDetail": "Layer up in style with our dark green suede overshirt. This shacket style piece is crafted from supersoft suede and features button-through fastening and twin pockets. Perfect for light layering during the chillier months, pair with chinos and trainers for a stylish look.",
     "pDetailList": ["Supersoft suede", "Button-through fastening","Twin pocket"],
     "pDetailMaterials": "100% Polyester.",
     "pPrice": 41.99,
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "jacket",
     "pImages": ["10041.webp", "10042.webp", "10043.webp", "10044.webp"],
-    "pStar": 3.5,
+    "pStar": 2,
     "pDate": 20230104
   },
   {
@@ -61,7 +61,7 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "joggers",
     "pImages": ["10051.webp", "10052.webp", "10053.webp", "10054.webp"],
-    "pStar": 3.5,
+    "pStar": 1.5,
     "pDate": 20230105
   },
   {
@@ -74,7 +74,7 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "trainers",
     "pImages": ["10061.webp", "10062.webp", "10063.webp", "10064.webp"],
-    "pStar": 3.5,
+    "pStar": 4.5,
     "pDate": 20230106
   },
   {
@@ -87,7 +87,7 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "trainers",
     "pImages": ["10071.webp", "10072.webp", "10073.webp", "10074.webp"],
-    "pStar": 3.5,
+    "pStar": 4,
     "pDate": 20230107
   },
   {
@@ -100,7 +100,7 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "trainers",
     "pImages": ["10081.webp", "10082.webp", "10083.webp", "10084.webp"],
-    "pStar": 3.5,
+    "pStar": 5,
     "pDate": 20230108
   },
   {
@@ -124,9 +124,9 @@
     "pDetailMaterials": "100% Recycled polyester.",
     "pPrice": 35.99,
     "pSize": ["S", "M", "L", "XL", "XXL"],
-    "pType": "t-shirt",
+    "pType": "jumper",
     "pImages": ["10031.webp", "10032.webp", "10033.webp", "10034.webp"],
-    "pStar": 3.5,
+    "pStar": 4.0,
     "pDate": 20230110
   },
   {
@@ -139,7 +139,7 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "hoodie",
     "pImages": ["10111.webp", "10112.webp", "10113.webp", "10114.webp"],
-    "pStar": 3.5,
+    "pStar": 4.5,
     "pDate": 20230111
   },
   {
@@ -152,7 +152,7 @@
     "pSize": ["S", "M", "L", "XL", "XXL"],
     "pType": "hoodie",
     "pImages": ["10121.webp", "10122.webp", "10123.webp", "10124.webp"],
-    "pStar": 3.5,
+    "pStar": 4,
     "pDate": 20230112
   }
 ]

@@ -548,6 +548,10 @@ input:focus {
     margin-left: 20px;
 }
 
+#relatedProductsRow {
+    justify-content:flex-start;
+}
+
 /* ---------- Cart ----------*/
 
 .cartPage {
