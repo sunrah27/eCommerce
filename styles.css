@@ -49,6 +49,7 @@ body {
 .header nav ul li {
     display: inline-block;
     margin-right: 20px;
+    color: #555;
 }
 
 .header .navbar a {
@@ -416,7 +417,7 @@ ul {
     border: none;
     background: #aaa;
     height: 1px;
-    margin: 20px 0;;
+    margin: 20px 0;
 }
 
 .copyright {
@@ -446,7 +447,7 @@ select:focus {
 }
 
 .product a img {
-    height: 300px;
+    height: 350px;
     width: auto;
 }
 
@@ -548,8 +549,35 @@ input:focus {
     margin-left: 20px;
 }
 
+#productDetailsRow {
+    align-items: flex-start;
+}
+
 #relatedProductsRow {
     justify-content:flex-start;
+}
+
+#notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.notification {
+    margin: 15px 0;
+    background-color: #ff523b;
+    color: #fff;
+    font-weight: 600;
+    padding: 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* ---------- Cart ----------*/
@@ -586,9 +614,11 @@ td {
 }
 
 td input {
-    width: 40px;
-    height: 30px;
     padding: 5px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
 }
 
 td a {
@@ -597,7 +627,7 @@ td a {
 
 td img {
     width: 80px;
-    height: 80px;
+    /* height: 80px; */
     margin-right: 10px;
 }
 
@@ -616,8 +646,84 @@ td:last-child, th:last-child {
     text-align: right;
 }
 
-/* ---------- Media Queries ---------- */
+#cartItem {
+    min-height: 50vh;
+}
 
+/* ---------- Login ----------*/
+
+.tab-form {
+    width: 70%;
+    min-width: 290px;
+    max-width: 375px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.tab-header {
+    display: flex;
+    font-size: 30px;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.tab-header .title {
+    margin: 0 auto 10px auto;
+    font-size: 15px;
+}
+
+.form-input {
+    display: none;
+    flex-direction: column;
+}
+
+.active {
+    display: flex;
+}
+
+.form-input input {
+    font-size: 20px;
+    padding: 5px;
+    margin: 5px 0;
+    height: 40px;
+    border: 1px solid #ff523b;
+}
+
+.loginMessage {
+    color: #ff523b;
+    text-align: center;
+}
+
+.hide {
+    display: none;
+}
+
+.form-input button {
+    margin: 10px 0;
+    border: 0px none #ff523b;
+    cursor: pointer;
+}
+
+.form-input input::placeholder {
+    color: #aaa;
+    font-size: 16px;
+}
+
+.notActive::after {
+    content: '';
+    background: #ff523b;
+    width: 0px;
+    height: 0px;
+    border-radius: 0px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ---------- Media Queries ---------- */
 @media only screen and (max-width: 800px){
     .navbar #menuItems {
         position: absolute;
@@ -665,6 +771,10 @@ td:last-child, th:last-child {
         flex-basis: 50%;
         min-width: 300px;
         flex-wrap: wrap;
+    }
+
+    .header nav ul li {
+        color: #fff;
     }
 }
 
