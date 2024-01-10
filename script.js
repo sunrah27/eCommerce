@@ -55,11 +55,48 @@ document.addEventListener('DOMContentLoaded', function () {
         displayCartItems();
     }
 
+    // Check if user is logged in and redirect to login page if not or cart page if logged in
+    const cartContainer = document.querySelector('.cartContainer img');
+    if (cartContainer) {
+        cartContainer.addEventListener('click', function () {
+            // Check if the user is logged in
+            const loggedInUser = localStorage.getItem('loggedInUser');
+
+            if (loggedInUser) {
+                // User is logged in, redirect to ./cart page
+                window.location.href = './cart.html';
+            } else {
+                // User is not logged in, redirect to ./login.html
+                window.location.href = './login.html';
+            }
+        });
+    }
+
+    checkLoggedInUser();
+
     // Check if the current page is login.html
     const isLoginPage = window.location.pathname.includes('login.html');
     if (isLoginPage) {
-        console.log('Login page');
+        // Get references to the login and signup buttons
+        var loginButton = document.getElementById('login');
+        var signupButton = document.getElementById('signup');
+
+        // Add event listener for the login button
+        loginButton.addEventListener('click', handleLogin);
+
+        // Add event listener for the signup button
+        signupButton.addEventListener('click', handleSignup);
+
+        // add event listner to Login and Sign-up headers
+        const title = document.querySelectorAll(".tab-header .title");
+        title.forEach(function(title) {
+            title.addEventListener("click", function() {
+                const tabName = title.textContent.toLowerCase().trim();
+                openTab(tabName);
+            })
+        })
     }
+
 });
 
 // function to fetch data from JSON file
@@ -293,14 +330,31 @@ function fetchProductDetails(sku) {
                         // Get the selected size and quantity
                         const sizeSelect = document.getElementById('selectSize');
                         const quantity = parseInt(document.getElementById('quantity').value, 10) || 0;
+                        let selectedSize;
 
-                        const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].value;
+                        switch(sizeSelect.options[sizeSelect.selectedIndex].value) {
+                            case "S":
+                                selectedSize = "Small";
+                                break;
+                            case "M":
+                                selectedSize = "Medium";
+                                break;
+                            case "L":
+                                selectedSize = "Large";
+                                break;
+                            case "XL":
+                                selectedSize = "X-Large";
+                                break;
+                            case "XXL":
+                                selectedSize = "XX_large";
+                                break;
+                        };
 
                         // Add the item to the cart
                         addToCart(product, selectedSize, quantity);
 
                         // You can also provide feedback to the user, such as a confirmation message
-                        alert(`${quantity} ${product.pFullName}(s) size ${product.pSize} added to the cart!`);
+                        showNotification(`${quantity} ${product.pFullName}(s) size ${selectedSize} added to the cart!`);
                     });
                 } else {
                     console.error('Element with ID "addToCartBtn" not found.');
@@ -319,7 +373,6 @@ function addToCart(product, size, quantity) {
 
     // Check if the product is already in the cart
     const existingItem = cartItems.find(item => item.pSku === product.pSku && item.size === size);
-
 
     if (existingItem) {
         // Update the quantity and size if the product is already in the cart
@@ -445,4 +498,94 @@ function fetchAndSortProductData() {
             console.error('Error fetching product data:', error);
             throw error; // Re-throw the error to propagate it to the caller
         });
+}
+
+// function to display login or sign-up fields on the login page
+function openTab(tabName) {
+    const tabs = document.getElementsByClassName("form-input");
+    const tabHeader = document.getElementsByClassName("title");
+
+    for (let i = 0; i < tabs.length; i++) {
+        if (tabs[i].classList.contains(tabName)) {
+            tabs[i].classList.add("active");
+            tabHeader[i].classList.remove("notActive");
+        } else {
+            tabs[i].classList.remove("active");
+            tabHeader[i].classList.add("notActive");
+        }
+    }
+}
+
+// Function to handle the login process
+async function handleLogin() {
+    // Get the entered email and password
+    const enteredEmail = document.getElementById('email').value;
+    const enteredPassword = document.getElementById('password').value;
+
+    try {
+        // Fetch user data from user.json
+        const users = await fetchDataFromJSON('./user.json');
+
+        const matchedUser = users.find(user => user.email === enteredEmail && user.password === enteredPassword);
+
+        if (matchedUser) {
+            // Store the session to local storage
+            localStorage.setItem('loggedInUser', JSON.stringify(matchedUser));
+
+            // Redirect to homepage
+            localStorage.setItem('newLogIn', 1);
+            window.location.href = './index.html';
+        } else {
+            // Display the loginMessage by removing the .hide class
+            const loginMessage = document.querySelector('.loginMessage');
+            loginMessage.classList.remove('hide');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
+}
+
+// Function to handle the signup process
+function handleSignup() {
+    // signup code goes here
+    console.log('Signup button clicked');
+}
+
+// Function to check if a user is already logged in
+function checkLoggedInUser() {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    const newLogIn = localStorage.getItem('newLogIn');
+    if (loggedInUser) {
+        // User is logged in, update menu label and hide loginMessage
+        const usernameLabel = `Hello ${JSON.parse(loggedInUser).username}`;
+        document.getElementById('menuItems').querySelector('li:last-child').innerHTML = usernameLabel;
+
+        const isLoginPage = window.location.pathname.includes('login.html');
+        if (isLoginPage) {
+            const loginMessage = document.querySelector('.loginMessage');
+            loginMessage.classList.add('hide');
+        }
+    }
+
+    if (newLogIn) {
+        showNotification(`Welcome ${JSON.parse(loggedInUser).username}`);
+        localStorage.removeItem('newLogIn');
+    }
+}
+
+// function to display a notification product is added cart
+function showNotification(message) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerText = message;
+
+    notificationContainer.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('hidden');
+        setTimeout(() => {
+            notificationContainer.removeChild(notification);
+        }, 500); // fadeout animation time. needs to match CSS timing in .notification. js time is in ms css time is in s 
+    }, 4000); // time the notification is displayed in ms
 }
