@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cec2b045b4.js" crossorigin="anonymous"></script>
     <script src="./script.js"></script>
-    <title>Red Store | </title>
+    <title>Red Store | Login</title>
 </head>
 <body>
 
@@ -39,24 +39,44 @@
             </div>
         </div>
     </div>
-     
-    <!-------- Product details -------->
 
-    <div class="small-container singleProduct">
-        <div class="row" id="productDetailsRow">
-            <!-- Product details will be dynamically inserted here -->
+    <!-------- Login -------->
+
+    <div class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <div class="tab-form">
+                        <div class="tab-header">
+                            <div class="title active"><h2>Login</h2></div>
+                            <div class="title"><h2>Sign-up</h2></div>
+                        </div>
+                        <div class="tab-body">
+                            <form id="loginForm" action="/login" method="post">
+                                <div class="form-input login active">
+                                    <input id="email" type="text" placeholder="email">
+                                    <input id="password" type="password" placeholder="password">
+                                    <button id="login" class="btn">Login</button>
+                                </div>
+                            </form>
+                            <form id="signupForm" action="/signup" method="post"></form>
+                                <div class="form-input sign-up">  
+                                    <input id="uemail" type="text" placeholder="email">
+                                    <input id="upassword" type="password" name="password" placeholder="password">
+                                    <input id="uaddress" type="text" placeholder="address">
+                                    <button id="signup" class="btn">Sign-up</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <img src="./assets/image1.png" alt="hero image">
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-------- Related product -------->
-
-    <div class="small-container">
-        <h2 class="title">Related Products</h2>
-        <div class="row" id="relatedProductsRow">
-
-        </div>
-    </div>
-
+    
     <!-------- Footer -------->
 
     <div class="footer">
@@ -97,6 +117,6 @@
             <p class="copyright">Copyright 2023 - Res Store</p>
         </div>
     </div>
-
+    
 </body>
-</html> 
+</html>

@@ -446,7 +446,7 @@ select:focus {
 }
 
 .product a img {
-    height: 300px;
+    height: 350px;
     width: auto;
 }
 
@@ -548,6 +548,10 @@ input:focus {
     margin-left: 20px;
 }
 
+#productDetailsRow {
+    align-items: flex-start;
+}
+
 #relatedProductsRow {
     justify-content:flex-start;
 }
@@ -621,6 +625,50 @@ td:last-child, th:last-child {
 #cartItem {
     min-height: 50vh;
 }
+
+/* ---------- Login ----------*/
+
+.tab-form {
+    width: 70%;
+    min-width: 290px;
+    max-width: 375px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.tab-header {
+    display: flex;
+    font-size: 30px;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.tab-header .title {
+    margin: 0 auto 10px auto;
+    font-size: 15px;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-input input {
+    font-size: 20px;
+    padding: 5px;
+    margin: 10px 0;
+    height: 40px;
+    border: 1px solid #ff523b;
+}
+
+.form-input button {
+    margin: 10px 0;
+    border: 0px none #ff523b;
+    cursor: pointer;
+}
+
 /* ---------- Media Queries ---------- */
 
 @media only screen and (max-width: 800px){
