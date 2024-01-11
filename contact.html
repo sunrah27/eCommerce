@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cec2b045b4.js" crossorigin="anonymous"></script>
     <script src="./script.js"></script>
-    <title>Red Store | Products</title>
+    <title>Red Store | Contact Us</title>
 </head>
 <body>
 
@@ -40,31 +40,44 @@
         </div>
     </div>
 
-    <!-------- All products -------->
+    <div id="notification-container2"></div>
 
-    <div class="small-container hProduct">
-        <div class="row row-2">
-            <h2>All Products</h2>
-            <div class="filterOptions">
-                <p>Filter by Type:</p>
-                <select name="filterByType" id="filterByType">
-                    <option value="all">All</option>
-                    <!-- Options will be dynamically added using JavaScript -->
-                </select>
-                <p>Sort:</p>
-                <select name="sortBy" id="sortBy">
-                    <option value="default">Default</option>
-                    <option value="priceH">Price: High to Low</option>
-                    <option value="priceL">Price: Low to High</option>
-                    <option value="rating">Rating</option>
-                </select>
+    <!-------- Contact Us -------->
+
+    <div class="hero hLogin">
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <div class="contact-form">
+                        <h2>Contact Us</h2>
+                        <form>
+                            <div class="form-input contact-us">
+                                <select name="reason" id="reason">
+                                    <option disabled selected>What is your reason for contacting us?</option>
+                                    <option value="product">Product inquiry</option>
+                                    <option value="order">Issue with an order</option>
+                                    <option value="payment">Payment issue</option>
+                                    <option value="cancel">Cancel an order</option>
+                                    <option value="returns">Discuss returns</option>
+                                </select>
+                                <input class="hidden" id="productNo" type="text" placeholder="please enter the product SKU">
+                                <input class="hidden" id="orderNo" type="text" placeholder="please enter the order number">
+                                <input id="name" type="text" placeholder="please enter your fullname">
+                                <input id="email" type="email" placeholder="please enter your email">
+                                <textarea name="textarea" id="textarea" cols="30" rows="10" placeholder="please enter your message here"></textarea>
+                                <p class="loginMessage hide">Pleaes complete all fields</p>
+                                <button id="contactUs" class="btn">Conact Us</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <img src="./assets/image1.png" alt="hero image">
+                </div>
             </div>
         </div>
-
-        <div class="row" id="productRow"></div>
-
     </div>
-
+    
     <!-------- Footer -------->
 
     <div class="footer">
@@ -107,4 +120,4 @@
     </div>
     
 </body>
-</html> 
+</html>
