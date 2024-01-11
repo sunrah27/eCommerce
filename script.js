@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // Check if the current page is index.html
-    const isHomePage = window.location.pathname.includes('index.html');
+    const isHomePage = window.location.pathname.endsWith('/index.html') || window.location.pathname === '/eCommerce/';
     if (isHomePage) {
         console.log('calling populateLatestProducts(productData)');
         populateLatestProducts(productData);
