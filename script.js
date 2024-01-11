@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Check if the current page is index.html
     const isHomePage = window.location.pathname.endsWith('/index.html') || window.location.pathname === '/eCommerce/';
     if (isHomePage) {
-        console.log('calling populateLatestProducts(productData)');
         populateLatestProducts(productData);
     }
 
@@ -157,7 +156,6 @@ function hideLoginMessage() {
 
 // Function to populate the Latest Product module
 async function populateLatestProducts(productData) {
-    console.log('running populateLatestProducts(productData)');
     try {
         // Wait for the product data to be fetched and sorted
         const sortedProductData = await fetchAndSortProductData(productData);
