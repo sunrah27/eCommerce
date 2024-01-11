@@ -480,6 +480,20 @@ select:focus {
     margin-top: 80px;
 }
 
+.singleProduct .row-2 h2::before {
+    content: ' ➔ ';
+    display: inline-block;
+    transform: scaleX(-1);
+}
+
+.singleProduct .row-2 a:hover {
+    text-decoration: underline;
+}
+
+.singleProduct .row-2 a:visited {
+    color: #000;
+}
+
 .singleProduct .col-2 img {
     width: 100%;
     padding: 0;
@@ -501,7 +515,7 @@ select:focus {
 }
 
 .singleProduct .col-2 {
-    padding: 20px;
+    padding: 0 20px;
 }
 
 .singleProduct h4 {
