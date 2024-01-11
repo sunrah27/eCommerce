@@ -689,8 +689,21 @@ async function handleLogin(event) {
 // Function to handle the signup process
 function handleSignup(event) {
     event.preventDefault();
-    // signup code goes here
-    console.log('Signup button clicked');
+    const inputFields = document.querySelectorAll('#ufullname, #uemail, #upassword, #uaddress1, #ucity, #upostcode');
+    const message = document.querySelector('.loginMessage2');
+
+    if(inputFields[0].value !== '' || inputFields[1].value !== '' || inputFields[2].value !== '' || inputFields[3].value !== '' || inputFields[4].value !== '' || inputFields[5].value !== '' ) {
+        showNotification2('Thank you registering an account.');
+        inputFields.forEach(function (inputField) {
+            inputField.value = '';
+        })
+        message.classList.add('hide');
+    } else {
+        message.classList.remove('hide');
+    }
+    console.log('poke');
+    console.log(inputFields);
+    console.log(message)
 }
 
 //
@@ -713,7 +726,6 @@ function checkSelectedOptions() {
     const selectedOption = dropdown.value;
 
     if (selectedOption === 'product') {
-        console.log('product match');
         productNo.classList.remove('hidden');
         orderNo.classList.add('hidden');
     } else if (selectedOption === 'order') {
