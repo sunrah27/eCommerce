@@ -8,7 +8,8 @@ Pages link can be found at [https://alkaidg.github.io/eCommerce/](https://alkaid
 ```
 username: john.smith@gmail.com
 password: johnspassword
-
+```
+```
 username: joe.bloggs@gmail.com
 password: bloggy
 ```
