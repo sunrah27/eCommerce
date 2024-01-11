@@ -18,21 +18,21 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Check if the current page is products.html
     const isProductsPage = window.location.pathname.includes('products.html');
     if (isProductsPage) {
-        populateProductsPage();
+        populateProductsPage(productData);
     }
 
     // Check if the current page is product-details.html
     const isProductDetailsPage = window.location.pathname.includes('product-details.html');
     if (isProductDetailsPage) {
         const sku = getSKUFromURL();
-        fetchProductDetails(sku);
-        fetchRelatedProducts(sku);
+        fetchProductDetails(sku, productData);
+        fetchRelatedProducts(sku, productData);
     }
 
     // Check if the current page is cart.html
     const isCartPage = window.location.pathname.includes('cart.html');
     if (isCartPage) {
-        displayCartItems();
+        displayCartItems(productData);
     }
 
     // Check if the current page is login.html
@@ -203,15 +203,11 @@ function fetchAndSortProductData(productData) {
 // function to populate Products page with products from productdb.json
 function populateProductsPage(productData) {
     const productRow = document.getElementById('productRow');
-    productData
-        .then(products => {
-            // Insert products into the productRow
-            products.forEach((product) => {
-                const productHTML = generateProductHTML(product);
-                productRow.insertAdjacentHTML('beforeend', productHTML);
-            });
-        })
-        .catch(error => console.error('Error fetching products:', error));
+    productData.forEach((product) => {
+        // Insert products into the productRow
+        const productHTML = generateProductHTML(product);
+        productRow.insertAdjacentHTML('beforeend', productHTML);
+    });
 }
 
 // Function to generate product HTML
@@ -243,109 +239,103 @@ function getSKUFromURL() {
 }
 
 // Function to populate the product-details page based on the SKU passed via URL
-function fetchProductDetails(sku) {
-    productData
-        .then(products => {
-            const product = products.find(product => product.pSku === sku);
-            document.title = `Red Store | ${product.pFullName}`;
-            if (product) {
-                const productDetailsHTML = `
-                    <div class="col-2">
-                        <img id="mainProduct" src="./assets/${product.pImages[0]}">
-                        <div class="small-img-row" id="smallImages">
-                            <div class="small-img-col">
-                                <img src="./assets/${product.pImages[0]}">
-                            </div>
-                            <div class="small-img-col">
-                                <img src="./assets/${product.pImages[1]}">
-                            </div>
-                            <div class="small-img-col">
-                                <img src="./assets/${product.pImages[2]}">
-                            </div>
-                            <div class="small-img-col">
-                                <img src="./assets/${product.pImages[3]}">
-                            </div>
-                        </div>
+function fetchProductDetails(sku, productData) {
+    const product = productData.find(product => product.pSku === sku);
+    document.title = `Red Store | ${product.pFullName}`;
+    if (product) {
+        const productDetailsHTML = `
+            <div class="col-2">
+                <img id="mainProduct" src="./assets/${product.pImages[0]}">
+                <div class="small-img-row" id="smallImages">
+                    <div class="small-img-col">
+                        <img src="./assets/${product.pImages[0]}">
                     </div>
-                    <div class="col-2">
-                        <p>${product.pType}</p>
-                        <h1>${product.pFullName}</h1>
-                        <div class="rating">
-                            ${generateStarIcons(product.pStar)}
-                        </div>
-                        <h4>£${product.pPrice.toFixed(2)}</h4>
-                        <select name="selectSize" id="selectSize">
-                            ${product.pSize.map(size => `<option value="${size}">${size}</option>`).join('')}
-                        </select>
-                        <input id="quantity" type="number" value="1">
-                        <a id="addToCartBtn" href="" class="btn">Add to cart</a>
-                        <h3>Product details <i class="fa fa-indent"></i></h3>
-                        <p>${product.pDetail}</p></br>
-                        <ul class="pDetailList">${product.pDetailList.map(item => `<li>${item}</li>`).join('')}</ul></br>
-                        <p>${product.pDetailMaterials}</p>
+                    <div class="small-img-col">
+                        <img src="./assets/${product.pImages[1]}">
                     </div>
-                `;
-                productDetailsRow.innerHTML = productDetailsHTML;
+                    <div class="small-img-col">
+                        <img src="./assets/${product.pImages[2]}">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="./assets/${product.pImages[3]}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <p>${product.pType}</p>
+                <h1>${product.pFullName}</h1>
+                <div class="rating">
+                    ${generateStarIcons(product.pStar)}
+                </div>
+                <h4>£${product.pPrice.toFixed(2)}</h4>
+                <select name="selectSize" id="selectSize">
+                    ${product.pSize.map(size => `<option value="${size}">${size}</option>`).join('')}
+                </select>
+                <input id="quantity" type="number" value="1">
+                <a id="addToCartBtn" href="" class="btn">Add to cart</a>
+                <h3>Product details <i class="fa fa-indent"></i></h3>
+                <p>${product.pDetail}</p></br>
+                <ul class="pDetailList">${product.pDetailList.map(item => `<li>${item}</li>`).join('')}</ul></br>
+                <p>${product.pDetailMaterials}</p>
+            </div>
+        `;
+        productDetailsRow.innerHTML = productDetailsHTML;
 
-                // add Event Listeners
-                const smallImagesContainer = document.getElementById('smallImages');
-                const mainProductImage = document.getElementById('mainProduct');
-                const addToCartBtn = document.getElementById('addToCartBtn');
+        // add Event Listeners
+        const smallImagesContainer = document.getElementById('smallImages');
+        const mainProductImage = document.getElementById('mainProduct');
+        const addToCartBtn = document.getElementById('addToCartBtn');
 
-                // Change the main product image on product-details.html
-                if (smallImagesContainer) {
-                    smallImagesContainer.addEventListener('click', function (event) {
-                        var target = event.target.closest('.small-img-col');
-                        if (target) {
-                            var newSrc = target.querySelector('img').src;
-                            mainProductImage.src = newSrc;
-                        }
-                    });
-                } else {
-                    console.error('Element with ID "smallImagesContainer" and "mainProductImage" not found.');
+        // Change the main product image on product-details.html
+        if (smallImagesContainer) {
+            smallImagesContainer.addEventListener('click', function (event) {
+                var target = event.target.closest('.small-img-col');
+                if (target) {
+                    var newSrc = target.querySelector('img').src;
+                    mainProductImage.src = newSrc;
                 }
+            });
+        } else {
+        console.error('Element with ID "smallImagesContainer" and "mainProductImage" not found.');
+        }
 
-                if (addToCartBtn) {
-                    addToCartBtn.addEventListener('click', function (event) {
-                        event.preventDefault();
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function (event) {
+                event.preventDefault();
 
-                        // Get the selected size and quantity
-                        const sizeSelect = document.getElementById('selectSize');
-                        const quantity = parseInt(document.getElementById('quantity').value, 10) || 0;
-                        let selectedSize;
+                // Get the selected size and quantity
+                const sizeSelect = document.getElementById('selectSize');
+                const quantity = parseInt(document.getElementById('quantity').value, 10) || 0;
+                let selectedSize;
 
-                        switch(sizeSelect.options[sizeSelect.selectedIndex].value) {
-                            case "S":
-                                selectedSize = "Small";
-                                break;
-                            case "M":
-                                selectedSize = "Medium";
-                                break;
-                            case "L":
-                                selectedSize = "Large";
-                                break;
-                            case "XL":
-                                selectedSize = "X-Large";
-                                break;
-                            case "XXL":
-                                selectedSize = "XX_large";
-                                break;
-                        };
+                switch(sizeSelect.options[sizeSelect.selectedIndex].value) {
+                    case "S":
+                        selectedSize = "Small";
+                        break;
+                    case "M":
+                        selectedSize = "Medium";
+                        break;
+                    case "L":
+                        selectedSize = "Large";
+                        break;
+                    case "XL":
+                        selectedSize = "X-Large";
+                        break;
+                    case "XXL":
+                        selectedSize = "XX_large";
+                        break;
+                };
 
-                        // Add the item to the cart
-                        addToCart(product, selectedSize, quantity);
+                // Add the item to the cart
+                addToCart(product, selectedSize, quantity);
 
-                        // You can also provide feedback to the user, such as a confirmation message
-                        showNotification(`${quantity} ${product.pFullName}(s) size ${selectedSize} added to the cart!`);
-                    });
-                } else {
-                    console.error('Element with ID "addToCartBtn" not found.');
-                }
-            } else {
-                console.error('Product not found');
-            }
-        })
-    .catch(error => console.error('Error fetching product details:', error));
+                // You can also provide feedback to the user, such as a confirmation message
+                showNotification(`${quantity} ${product.pFullName}(s) size ${selectedSize} added to the cart!`);
+            });
+        } else {
+            console.error('Element with ID "addToCartBtn" not found.');
+        }
+    }  
 }
         
 // Function to add selected product to cart and store data to local storage
@@ -377,47 +367,43 @@ function addToCart(product, size, quantity) {
 }
 
 // Function to fetch and display related products
-function fetchRelatedProducts(currentSku) {
-    productData
-        .then(products => {
-            // Find the current product
-            const currentProduct = products.find(product => product.pSku === currentSku);
+function fetchRelatedProducts(currentSku, productData) {
+    // Find the current product
+    const currentProduct = productData.find(product => product.pSku === currentSku);
 
-            if (currentProduct) {
-                // Filter products based on the pType of the current product
-                const relatedProducts = products.filter(product => product.pType === currentProduct.pType && product.pSku !== currentSku);
+    if (currentProduct) {
+        // Filter products based on the pType of the current product
+        const relatedProducts = productData.filter(product => product.pType === currentProduct.pType && product.pSku !== currentSku);
 
-                // Display up to 4 related products
-                const maxRelatedProducts = 4;
-                const relatedProductsRow = document.getElementById('relatedProductsRow');
+        // Display up to 4 related products
+        const maxRelatedProducts = 4;
+        const relatedProductsRow = document.getElementById('relatedProductsRow');
 
-                for (let i = 0; i < maxRelatedProducts && i < relatedProducts.length; i++) {
-                    const relatedProduct = relatedProducts[i];
+        for (let i = 0; i < maxRelatedProducts && i < relatedProducts.length; i++) {
+            const relatedProduct = relatedProducts[i];
 
-                    // Create the related product HTML dynamically
-                    const relatedProductHTML = `
-                        <div class="col-4">
-                            <div class="product">
-                                <a href="./product-details.html?sku=${relatedProduct.pSku}">
-                                    <img src="./assets/${relatedProduct.pImages[0]}" alt="${relatedProduct.pFullName}">
-                                    <h4>${relatedProduct.pFullName}</h4>
-                                    <div class="rating">
-                                        ${generateStarIcons(relatedProduct.pStar)}
-                                    </div>
-                                    <p>£${relatedProduct.pPrice.toFixed(2)}</p>
-                                </a>
+            // Create the related product HTML dynamically
+            const relatedProductHTML = `
+                <div class="col-4">
+                    <div class="product">
+                        <a href="./product-details.html?sku=${relatedProduct.pSku}">
+                            <img src="./assets/${relatedProduct.pImages[0]}" alt="${relatedProduct.pFullName}">
+                            <h4>${relatedProduct.pFullName}</h4>
+                            <div class="rating">
+                                ${generateStarIcons(relatedProduct.pStar)}
                             </div>
-                        </div>
-                    `;
+                            <p>£${relatedProduct.pPrice.toFixed(2)}</p>
+                        </a>
+                    </div>
+                </div>
+            `;
 
-                    // Append the related product HTML to the row
-                    relatedProductsRow.innerHTML += relatedProductHTML;
-                }
-            } else {
-                console.error('Current product not found');
-            }
-        })
-        .catch(error => console.error('Error fetching related products:', error));
+            // Append the related product HTML to the row
+            relatedProductsRow.innerHTML += relatedProductHTML;
+        }
+    } else {
+        console.error('Current product not found');
+    }
 }
 
 // Function to update the cart counter display
@@ -438,7 +424,7 @@ function updateCartCounter() {
 //
 
 // Function to display cart items stored in local storage on the carts page
-function displayCartItems() {
+function displayCartItems(productData) {
     const cartItemsContainer = document.getElementById('tableBody');
     const totalPriceContainer = document.querySelector('.totalPrice');
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
@@ -448,71 +434,67 @@ function displayCartItems() {
     if (cartItems.length > 0) {
         // Populate cart items dynamically
         cartItems.forEach(item => {
-            productData
-                .then(products => {
-                    // find product details based on the pSku value stored in the local storage
-                    const product = products.find(p => p.pSku === item.pSku);
-                    if (product) {
-                        // generate html for cart page
-                        const cartItemHTML = `
+            // find product details based on the pSku value stored in the local storage
+            const product = productData.find(product => product.pSku === item.pSku);
+            if (product) {
+                // generate html for cart page
+                const cartItemHTML = `
+                    <tr>
+                        <td>
+                            <div class="cart-info">
+                                <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
+                                <div>
+                                    <p>${product.pFullName}</p>
+                                    <small>Price: £${product.pPrice.toFixed(2)}</small>
+                                    <a href="" onclick="removeCartItem('${product.pSku}', '${item.size}')">Remove</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${item.size}</td>
+                        <td>${item.quantity}</td>
+                        <td>£${(item.quantity * product.pPrice).toFixed(2)}</td>
+                    </tr>
+                `;
+                
+                // Calculate the total price for the cart
+                total += (item.quantity * product.pPrice);
+
+                // Append the cart item HTML to the cart items container
+                cartItemsContainer.innerHTML += cartItemHTML;
+
+                // Calculate tax and total
+                const tax = total * 0.2;
+                const subtotal = total * 0.8;
+
+                // Update the total price table HTML
+                const totalPriceHTML = `
+                    <table>
+                        <tbody>
                             <tr>
-                                <td>
-                                    <div class="cart-info">
-                                        <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
-                                        <div>
-                                            <p>${product.pFullName}</p>
-                                            <small>Price: £${product.pPrice.toFixed(2)}</small>
-                                            <a href="" onclick="removeCartItem('${product.pSku}', '${item.size}')">Remove</a>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>${item.size}</td>
-                                <td>${item.quantity}</td>
-                                <td>£${(item.quantity * product.pPrice).toFixed(2)}</td>
+                                <td>Subtotal</td>
+                                <td>£${(subtotal).toFixed(2)}</td>
                             </tr>
-                        `;
-                        
-                        // Calculate the total price for the cart
-                        total += (item.quantity * product.pPrice);
-
-                        // Append the cart item HTML to the cart items container
-                        cartItemsContainer.innerHTML += cartItemHTML;
-
-                        // Calculate tax and total
-                        const tax = total * 0.2;
-                        const subtotal = total * 0.8;
-        
-                        // Update the total price table HTML
-                        const totalPriceHTML = `
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>Subtotal</td>
-                                        <td>£${(subtotal).toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tax @ 20%</td>
-                                        <td>£${tax.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total</td>
-                                        <td>£${total.toFixed(2)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        `;
-                        totalPriceContainer.innerHTML = totalPriceHTML;
-                    } else {
-                        console.error('Product not found for SKU:', item.pSku);
-                    }
-                })
-                .catch(error => console.error('Error fetching product data:', error));
-        });
-    }
+                            <tr>
+                                <td>Tax @ 20%</td>
+                                <td>£${tax.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td>£${total.toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                totalPriceContainer.innerHTML = totalPriceHTML;
+            } else {
+                console.error('Product not found for SKU:', item.pSku);
+            }
+        })
+    };
 }
 
 // Function to remove an Item from the cart
-function removeCartItem(sku, size) {
+function removeCartItem(sku, size, productData) {
     let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Remove the item from the cart based on SKU and size
@@ -522,7 +504,7 @@ function removeCartItem(sku, size) {
     localStorage.setItem('cart', JSON.stringify(cartItems));
 
     // Update the cart display on the cart page
-    displayCartItems();
+    displayCartItems(productData);
     updateCartCounter();
 }
 
