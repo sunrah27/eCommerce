@@ -5,6 +5,9 @@ Sign-up functionality has not been developed as the site is only displayed using
 
 Pages link can be found at [https://alkaidg.github.io/eCommerce/](https://alkaidg.github.io/eCommerce/)
 
+> [!WARNING]
+> Login and Basket information is stored in the browser storage. You can clear local storage by running the command `clearLocalStorage()` in your console.
+
 ```
 username: john.smith@gmail.com
 password: johnspassword
@@ -13,9 +16,6 @@ password: johnspassword
 username: joe.bloggs@gmail.com
 password: bloggy
 ```
-> [!WARNING]
-> Login and Basket information is stored in the browser storage. You can clear local storage by running the command `clearLocalStorage()` in your console.
-
 
 ## Features
 Site has following features completed:
@@ -24,7 +24,7 @@ Site has following features completed:
 - [x] Build Products Details page `product-details.html?sku=xxxxx`
 - [x] Build Cart page `cart.html`
 - [x] Build Login page `login.html`
-- [ ] Build Contact page
+- [x] Build Contact page
 - [x] Create `productDB.json` file
 - [x] Refactor Products page to populate from productDB
 - [x] Refactor Product Details page to populate using sku passed va URI

@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cec2b045b4.js" crossorigin="anonymous"></script>
     <script src="./script.js"></script>
-    <title>Red Store | Login</title>
+    <title>Red Store | Contact Us</title>
 </head>
 <body>
 
@@ -40,38 +40,35 @@
         </div>
     </div>
 
-    <!-------- Login -------->
+    <div id="notification-container2"></div>
+
+    <!-------- Contact Us -------->
 
     <div class="hero hLogin">
         <div class="container">
             <div class="row">
                 <div class="col-2">
-                    <div class="tab-form">
-                        <div class="tab-header">
-                            <div class="title"><h2>Login</h2></div>
-                            <div class="title notActive"><h2>Sign-up</h2></div>
-                        </div>
-                        <div class="tab-body">
-                            <form>
-                                <div class="form-input login active">
-                                    <input id="email" type="email" placeholder="user email">
-                                    <input id="password" type="password" placeholder="user password">
-                                    <p class="loginMessage hide">The username or password you have entered is incorrect</p>
-                                    <button id="login" class="btn">Login</button>
-                                </div>
-                            </form>
-                            <form>
-                                <div class="form-input sign-up">
-                                    <input id="ufullname" type="text" placeholder="please enter your fullname">
-                                    <input id="uemail" type="email" placeholder="please enter your email">
-                                    <input id="upassword" type="password" name="password" placeholder="select a strong password">
-                                    <input id="uaddress1" type="text" placeholder="first line of your address">
-                                    <input id="ucity" type="text" placeholder="please enter your city">
-                                    <input id="upostcode" type="text" placeholder="please enter your postcode">
-                                    <button id="signup" class="btn">Sign-up</button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="contact-form">
+                        <h2>Contact Us</h2>
+                        <form>
+                            <div class="form-input contact-us">
+                                <select name="reason" id="reason">
+                                    <option disabled selected>What is your reason for contacting us?</option>
+                                    <option value="product">Product inquiry</option>
+                                    <option value="order">Issue with an order</option>
+                                    <option value="payment">Payment issue</option>
+                                    <option value="cancel">Cancel an order</option>
+                                    <option value="returns">Discuss returns</option>
+                                </select>
+                                <input class="hidden" id="productNo" type="text" placeholder="please enter the product SKU">
+                                <input class="hidden" id="orderNo" type="text" placeholder="please enter the order number">
+                                <input id="name" type="text" placeholder="please enter your fullname">
+                                <input id="email" type="email" placeholder="please enter your email">
+                                <textarea name="textarea" id="textarea" cols="30" rows="10" placeholder="please enter your message here"></textarea>
+                                <p class="loginMessage hide">Pleaes complete all fields</p>
+                                <button id="contactUs" class="btn">Conact Us</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="col-2">

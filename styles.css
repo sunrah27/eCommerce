@@ -6,6 +6,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
+    height: 100%;
 }
 
 .header .container .navbar .logo img {
@@ -589,6 +590,37 @@ input:focus {
     transition: opacity 0.5s ease-in-out;
 }
 
+#notification-container2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.notification2 {
+    background-color: #ff523b;
+    color: #fff;
+    font-weight: 600;
+    padding: 100px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: opacity 0.5s ease-in-out;
+    box-shadow: 0 0 10px #8a8a8a;
+}
+
+.notification2::before {
+    content: ''; /* Create a pseudo-element for the border */
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    z-index: 1;
+}
+
 .hidden {
     opacity: 0;
     pointer-events: none;
@@ -597,7 +629,10 @@ input:focus {
 /* ---------- Cart ----------*/
 
 .cartPage {
-    margin: 80px auto;
+    margin: 0 auto;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    min-height: calc(100vh - 420px);
 }
 
 table {
@@ -660,20 +695,21 @@ td:last-child, th:last-child {
     text-align: right;
 }
 
-#cartItem {
-    min-height: 50vh;
-}
-
 /* ---------- Login ----------*/
 
+.hLogin {
+    min-height: calc(100vh - 343px);
+}
+
 .tab-form {
-    width: 70%;
+    width: 90%;
     min-width: 290px;
-    max-width: 375px;
+    /* max-width: 375px; */
     margin: auto;
     background: #fff;
     padding: 20px;
     border-radius: 15px;
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.1);
 }
 
 .tab-header {
@@ -693,16 +729,21 @@ td:last-child, th:last-child {
     flex-direction: column;
 }
 
-.active {
+.form-input.active {
     display: flex;
 }
 
-.form-input input {
+.form-input input, .form-input select, .form-input textarea {
     font-size: 20px;
+    font-family: 'Poppins', sans-serif;
     padding: 5px;
-    margin: 5px 0;
+    margin: 10px 0;
     height: 40px;
-    border: 1px solid #ff523b;
+    border-top: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    border-bottom: 2px solid #ff523b;
+    border-radius: 10px;
 }
 
 .loginMessage {
@@ -715,7 +756,10 @@ td:last-child, th:last-child {
 }
 
 .form-input button {
+    font-size: 20px;
+    font-weight: 600;
     margin: 10px 0;
+    padding: 15px;
     border: 0px none #ff523b;
     cursor: pointer;
 }
@@ -735,6 +779,59 @@ td:last-child, th:last-child {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
+}
+
+/* ---------- Contact Us ---------- */
+
+.contact-form {
+    width: 90%;
+    min-width: 290px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.contact-us {
+    display: flex;
+}
+
+.contact-form h2 {
+    padding: 10px 0;
+}
+
+#reason {
+    height: 40px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#reason::placeholder {
+    color: #aaa;
+    font-size: 16px;
+}
+
+.form-input textarea {
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    height: 120px;
+}
+
+.form-input textarea::placeholder {
+    color: #aaa;
+    font-size: 16px;
+}
+
+.form-input textarea:focus {
+    border-top: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    border-bottom: 2px solid #ff523b;
+}
+
+.hidden {
+    display: none;
 }
 
 /* ---------- Media Queries ---------- */

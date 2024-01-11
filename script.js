@@ -38,8 +38,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Check if the current page is login.html
     const isLoginPage = window.location.pathname.includes('login.html');
     if (isLoginPage) {
-
         setupLoginEventListeners();
+    }
+
+    const isContactPage = window.location.pathname.includes('contact.html');
+    if (isContactPage) {
+        setupContactEventListeners();
     }
 
     // Check if the user is logged in or not and redirect to Cart or Login page
@@ -108,12 +112,43 @@ function showNotification(message) {
 
     notificationContainer.appendChild(notification);
 
+    notification.addEventListener('click', () => {
+        hideNotification(notification, notificationContainer);
+    });
+
     setTimeout(() => {
         notification.classList.add('hidden');
         setTimeout(() => {
             notificationContainer.removeChild(notification);
         }, 500); // fadeout animation time. needs to match CSS timing in .notification. js time is in ms css time is in s 
     }, 4000); // time the notification is displayed in ms
+}
+
+function showNotification2(message) {
+    const notificationContainer = document.getElementById('notification-container2');
+    const notification = document.createElement('div');
+    notification.classList.add('notification2');
+    notification.innerText = message;
+
+    notificationContainer.appendChild(notification);
+
+    notification.addEventListener('click', () => {
+        hideNotification(notification, notificationContainer);
+    });
+
+    setTimeout(() => {
+        notification.classList.add('hidden');
+        setTimeout(() => {
+            notificationContainer.removeChild(notification);
+        }, 500); // fadeout animation time. needs to match CSS timing in .notification. js time is in ms css time is in s 
+    }, 4000); // time the notification is displayed in ms
+}
+
+function hideNotification(notification, container) {
+    notification.classList.add('hidden');
+    setTimeout(() => {
+        container.removeChild(notification);
+    }, 500); // fadeout animation time (needs to match CSS timing in .notification; JavaScript time is in ms, CSS time is in s)
 }
 
 // Function to check if a user is already logged in
@@ -262,7 +297,7 @@ function fetchProductDetails(sku, productData) {
                 </div>
             </div>
             <div class="col-2">
-                <p>${product.pType}</p>
+                <p>${product.pType} \\ SKU-${product.pSku}</p>
                 <h1>${product.pFullName}</h1>
                 <div class="rating">
                     ${generateStarIcons(product.pStar)}
@@ -445,6 +480,7 @@ function displayCartItems(productData) {
                                 <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
                                 <div>
                                     <p>${product.pFullName}</p>
+                                    <small>SKU-${product.pSku}</small>
                                     <small>Price: £${product.pPrice.toFixed(2)}</small>
                                     <a href="" onclick="removeCartItem('${product.pSku}', '${item.size}')">Remove</a>
                                 </div>
@@ -512,7 +548,7 @@ function removeCartItem(sku, size, productData) {
 // Function run on Login page
 //
 
-// Function to add Event Listners on the Login page
+// Function to add Event Listenrs on the Login page
 function setupLoginEventListeners() {
     const loginButton = document.getElementById('login');
     const signupButton = document.getElementById('signup');
@@ -546,7 +582,8 @@ function openTab(tabName) {
 }
 
 // Function to handle the login process
-async function handleLogin() {
+async function handleLogin(event) {
+    event.preventDefault();
     // Get the entered email and password
     const enteredEmail = document.getElementById('email').value;
     const enteredPassword = document.getElementById('password').value;
@@ -574,9 +611,62 @@ async function handleLogin() {
 }
 
 // Function to handle the signup process
-function handleSignup() {
+function handleSignup(event) {
+    event.preventDefault();
     // signup code goes here
     console.log('Signup button clicked');
+}
+
+//
+// Function run on Contact page
+//
+
+// add event listners to the contact us page
+function setupContactEventListeners() {
+    const dropdown = document.getElementById('reason');
+    const contactUs = document.getElementById('contactUs');
+
+    dropdown.addEventListener('change', checkSelectedOptions);
+    contactUs.addEventListener('click', contactMessage);
+}
+
+// Function to check options and display additional input fields
+function checkSelectedOptions() {
+    const productNo = document.getElementById('productNo');
+    const orderNo = document.getElementById('orderNo');
+    const selectedOption = dropdown.value;
+
+    if (selectedOption === 'product') {
+        console.log('product match');
+        productNo.classList.remove('hidden');
+        orderNo.classList.add('hidden');
+    } else if (selectedOption === 'order') {
+        console.log('order match');
+        orderNo.classList.remove('hidden');
+        productNo.classList.add('hidden');
+    } else {
+        productNo.classList.add('hidden');
+        orderNo.classList.add('hidden');
+    };
+}
+
+// Display thank you message when contact us form is completed
+function contactMessage(event) {
+    event.preventDefault();
+    const inputFields = document.querySelectorAll('#reason, #productNo, #orderNo, #name, #email, #textarea');
+    const reasonSelect = document.getElementById('reason');
+    const message = document.querySelector('.loginMessage');
+
+    if (inputFields[3].value  && inputFields[4].value && inputFields[5].value){
+        showNotification2('Thank you for contacting us. We will reply as soon as possible.');
+        inputFields.forEach(function (inputField) {
+            inputField.value = '';
+        })
+        reasonSelect.selectedIndex = 0;
+        message.classList.add('hide');
+    } else {
+        message.classList.remove('hide');
+    };
 }
 
 // Fucntion added to clear local storage via console
