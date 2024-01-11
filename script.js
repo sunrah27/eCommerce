@@ -88,7 +88,7 @@ function generateStarIcons(rating) {
 }
 
 // Function check if user is logged in when Cart is clicked and redirect to Cart page or Login page
-function handleCartContainerClick() {);
+function handleCartContainerClick() {
     const cartContainer = document.querySelector('.cartContainer img');
     if (cartContainer) {
         cartContainer.addEventListener('click', function () {
