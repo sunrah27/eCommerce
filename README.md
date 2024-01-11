@@ -1,7 +1,9 @@
 # eCommerce
 An ecommerce site with a shopping basket. Products details are retrived from a JSON file named productdb.json.
 
-Sign-up functionality has not been developed as the site is only displayed using GitHub pages. To login you can try any of the following  user logins. 
+Sign-up functionality has not been developed as the site is only displayed using GitHub pages. To login you can try any of the following  user logins.
+
+Pages link can be found at [https://alkaidg.github.io/eCommerce/](https://alkaidg.github.io/eCommerce/)
 
 ```
 username: john.smith@gmail.com
@@ -10,6 +12,11 @@ password: johnspassword
 username: joe.bloggs@gmail.com
 password: bloggy
 ```
+> [!WARNING]
+> Login and Basket information is stored in the browser storage. You can clear local storage by running the command `clearLocalStorage()` in your console.
+
+
+## Features
 Site has following features completed:
 - [x] Build Homepage `index.html`
 - [x] Build Products page `products.html`

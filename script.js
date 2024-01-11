@@ -578,3 +578,9 @@ function handleSignup() {
     // signup code goes here
     console.log('Signup button clicked');
 }
+
+// Fucntion added to clear local storage via console
+function clearLocalStorage() {
+    localStorage.clear();
+    location.reload(true);
+}
