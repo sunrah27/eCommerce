@@ -42,17 +42,23 @@
 
     <!-------- All products -------->
 
-    <div class="small-container">
-
+    <div class="small-container hProduct">
         <div class="row row-2">
             <h2>All Products</h2>
-            <select name="sort" id="sort">
-                <option value="default">Default</option>
-                <option value="price">Price</option>
-                <option value="popularity">Popular</option>
-                <option value="rating">Rating</option>
-                <option value="sale">Sale</option>
-            </select>
+            <div class="filterOptions">
+                <p>Filter by Type:</p>
+                <select name="filterByType" id="filterByType">
+                    <option value="all">All</option>
+                    <!-- Options will be dynamically added using JavaScript -->
+                </select>
+                <p>Sort:</p>
+                <select name="sortBy" id="sortBy">
+                    <option value="default">Default</option>
+                    <option value="priceH">Price: High to Low</option>
+                    <option value="priceL">Price: Low to High</option>
+                    <option value="rating">Rating</option>
+                </select>
+            </div>
         </div>
 
         <div class="row" id="productRow"></div>
@@ -82,7 +88,7 @@
                         <li><a href="./index.html">Home</a></li>
                         <li><a href="./products.html">Products</a></li>
                         <li><a href="">Contact</a></li>
-                        <li><a href="./login.html">Account</a></li>
+                        <li><a href="./login.html">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-col-4">

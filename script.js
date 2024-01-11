@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Check if the current page is products.html
     const isProductsPage = window.location.pathname.includes('products.html');
     if (isProductsPage) {
+        populateFilterByTypeDropdown(productData);
+        setupFilterAndSortEventListeners(productData);
         populateProductsPage(productData);
     }
 
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const isCartPage = window.location.pathname.includes('cart.html');
     if (isCartPage) {
         displayCartItems(productData);
+        addCartEventListners();
     }
 
     // Check if the current page is login.html
@@ -121,7 +124,7 @@ function showNotification(message) {
         setTimeout(() => {
             notificationContainer.removeChild(notification);
         }, 500); // fadeout animation time. needs to match CSS timing in .notification. js time is in ms css time is in s 
-    }, 4000); // time the notification is displayed in ms
+    }, 3000); // time the notification is displayed in ms
 }
 
 function showNotification2(message) {
@@ -139,9 +142,11 @@ function showNotification2(message) {
     setTimeout(() => {
         notification.classList.add('hidden');
         setTimeout(() => {
-            notificationContainer.removeChild(notification);
+            if (notificationContainer.contains(notification)){
+                notificationContainer.removeChild(notification);
+            }
         }, 500); // fadeout animation time. needs to match CSS timing in .notification. js time is in ms css time is in s 
-    }, 4000); // time the notification is displayed in ms
+    }, 3000); // time the notification is displayed in ms
 }
 
 function hideNotification(notification, container) {
@@ -235,11 +240,21 @@ function fetchAndSortProductData(productData) {
 // Function run on Products page
 //
 
-// function to populate Products page with products from productdb.json
-function populateProductsPage(productData) {
+// function to populate Products page with filters and sort
+function populateProductsPage(productData, filterType = 'all', sortType = 'default') {
     const productRow = document.getElementById('productRow');
-    productData.forEach((product) => {
-        // Insert products into the productRow
+    
+    // Clear existing content in the row
+    productRow.innerHTML = '';
+
+    // Apply filter by type
+    const filteredProducts = (filterType !== 'all') ? productData.filter(product => product.pType.toLowerCase() === filterType) : productData;
+
+    // Apply sorting
+    const sortedProducts = sortProducts(filteredProducts, sortType);
+
+    // Populate the Products page with filtered and sorted products
+    sortedProducts.forEach((product) => {
         const productHTML = generateProductHTML(product);
         productRow.insertAdjacentHTML('beforeend', productHTML);
     });
@@ -261,6 +276,57 @@ function generateProductHTML(product) {
             </div>
         </div>
     `;
+}
+
+// Function to populate the "Filter by Type" dropdown
+function populateFilterByTypeDropdown(productData) {
+    const filterByTypeDropdown = document.getElementById('filterByType');
+    const uniquePTypes = [...new Set(productData.map(product => product.pType))];
+
+    uniquePTypes.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type.toLowerCase();
+        option.textContent = type;
+        filterByTypeDropdown.appendChild(option);
+    });
+}
+
+// Function to add event listeners for filter and sort
+function setupFilterAndSortEventListeners(productData) {
+    const filterByTypeDropdown = document.getElementById('filterByType');
+    const sortByDropdown = document.getElementById('sortBy');
+
+    // Event listener for filter by type
+    filterByTypeDropdown.addEventListener('change', function () {
+        const selectedType = filterByTypeDropdown.value;
+        const selectedSort = sortByDropdown.value;
+        // Call the function to populate products based on filter and sort
+        populateProductsPage(productData, selectedType, selectedSort);
+    });
+
+    // Event listener for sort
+    sortByDropdown.addEventListener('change', function () {
+        const selectedType = filterByTypeDropdown.value;
+        const selectedSort = sortByDropdown.value;
+        // Call the function to populate products based on filter and sort
+        populateProductsPage(productData, selectedType, selectedSort);
+    });
+}
+
+// Function to sort products based on selected option
+function sortProducts(products, sortType) {
+    switch (sortType) {
+        case 'default':
+            return products.sort((a, b) => a.pSku - b.pSku);
+        case 'priceH':
+            return products.sort((a, b) => b.pPrice - a.pPrice);
+        case 'priceL':
+            return products.sort((a, b) => a.pPrice - b.pPrice);
+        case 'rating':
+            return products.sort((a, b) => b.pStar - a.pStar);
+        default:
+            return products.sort((a, b) => a.pSku - b.pSku);
+    }
 }
 
 //
@@ -486,9 +552,9 @@ function displayCartItems(productData) {
                                 </div>
                             </div>
                         </td>
-                        <td>${item.size}</td>
-                        <td>${item.quantity}</td>
-                        <td>£${(item.quantity * product.pPrice).toFixed(2)}</td>
+                        <td><p>${item.size}</p></td>
+                        <td><p>${item.quantity}</p></td>
+                        <td><p>£${(item.quantity * product.pPrice).toFixed(2)}</p></td>
                     </tr>
                 `;
                 
@@ -542,6 +608,16 @@ function removeCartItem(sku, size, productData) {
     // Update the cart display on the cart page
     displayCartItems(productData);
     updateCartCounter();
+}
+
+function addCartEventListners() {
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    checkoutBtn.addEventListener('click', checkoutMessage);
+}
+
+function checkoutMessage (event) {
+    event.preventDefault();
+    showNotification2('Thank you for your purchase.')
 }
 
 //

@@ -33,7 +33,8 @@ Site has following features completed:
 - [x] Code Cart functionality
 - [x] Create `userDB.json`
 - [x] Code User login functionality
-- [ ] Code filter feature in the Products Page
+- [x] Code filter feature in the Products Page
+- [x] Code sort feature
 - [x] Replace browser alerts with pop-up notifications
 - [x] Added pop-up notification after login
 - [x] Added pop-up notification after adding item to shopping basket
