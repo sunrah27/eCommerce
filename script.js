@@ -1,49 +1,29 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    const productData = await fetchDataFromJSON('./productdb.json');
+    
     // Display mobile menu
     const menuItems = document.getElementById('menuItems');
+    const menuIcon = document.getElementById('menuIcon');
     menuItems.style.maxHeight = '0px';
-
-    document.getElementById('menuIcon').addEventListener('click', () => {
-        if (menuItems.style.maxHeight === '0px') {
-            menuItems.style.maxHeight = '200px';
-        } else {
-            menuItems.style.maxHeight = '0px';
-        }
+    menuIcon.addEventListener('click', () => {
+        menuItems.style.maxHeight = menuItems.style.maxHeight === '0px' ? '200px' : '0px';
     });
-
-    // Check and update the cart counter across every page.
-    updateCartCounter();
 
     // Check if the current page is index.html
     const isHomePage = window.location.pathname.includes('index.html');
     if (isHomePage) {
-        populateLatestProducts();
+        populateLatestProducts(productData);
     }
 
     // Check if the current page is products.html
     const isProductsPage = window.location.pathname.includes('products.html');
     if (isProductsPage) {
-        // Populate Products page with products from productdb.json
-        const productRow = document.getElementById('productRow');
-
-        fetchDataFromJSON('./productdb.json')
-            .then(products => {
-                // Insert products into the productRow
-                products.forEach((product) => {
-                    const productHTML = generateProductHTML(product);
-                    productRow.insertAdjacentHTML('beforeend', productHTML);
-                });
-            })
-            .catch(error => console.error('Error fetching products:', error));
+        populateProductsPage();
     }
 
     // Check if the current page is product-details.html
     const isProductDetailsPage = window.location.pathname.includes('product-details.html');
     if (isProductDetailsPage) {
-        // Populate Product details based on sku
-        const productDetailsRow = document.getElementById('productDetailsRow');
-
-        // Get SKU from the URL and fetch product details
         const sku = getSKUFromURL();
         fetchProductDetails(sku);
         fetchRelatedProducts(sku);
@@ -55,49 +35,24 @@ document.addEventListener('DOMContentLoaded', function () {
         displayCartItems();
     }
 
-    // Check if user is logged in and redirect to login page if not or cart page if logged in
-    const cartContainer = document.querySelector('.cartContainer img');
-    if (cartContainer) {
-        cartContainer.addEventListener('click', function () {
-            // Check if the user is logged in
-            const loggedInUser = localStorage.getItem('loggedInUser');
-
-            if (loggedInUser) {
-                // User is logged in, redirect to ./cart page
-                window.location.href = './cart.html';
-            } else {
-                // User is not logged in, redirect to ./login.html
-                window.location.href = './login.html';
-            }
-        });
-    }
-
-    checkLoggedInUser();
-
     // Check if the current page is login.html
     const isLoginPage = window.location.pathname.includes('login.html');
     if (isLoginPage) {
-        // Get references to the login and signup buttons
-        var loginButton = document.getElementById('login');
-        var signupButton = document.getElementById('signup');
 
-        // Add event listener for the login button
-        loginButton.addEventListener('click', handleLogin);
-
-        // Add event listener for the signup button
-        signupButton.addEventListener('click', handleSignup);
-
-        // add event listner to Login and Sign-up headers
-        const title = document.querySelectorAll(".tab-header .title");
-        title.forEach(function(title) {
-            title.addEventListener("click", function() {
-                const tabName = title.textContent.toLowerCase().trim();
-                openTab(tabName);
-            })
-        })
+        setupLoginEventListeners();
     }
 
+    // Check if the user is logged in or not and redirect to Cart or Login page
+    handleCartContainerClick();
+    // Check if the user is logged in
+    checkLoggedInUser();
+    // Check and update the cart counter across every page.
+    updateCartCounter();
 });
+
+//
+// Functions run on multiple pages
+//
 
 // function to fetch data from JSON file
 async function fetchDataFromJSON(filePath) {
@@ -132,127 +87,154 @@ function generateStarIcons(rating) {
     return starsHTML;
 }
 
-// Function to update the cart counter display
-function updateCartCounter() {
-    const cartCounter = document.querySelector('.cartCounter');
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Update the cart counter based on the total quantity in the cart
-    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
-    cartCounter.innerHTML = totalQuantity.toString();
-
-    // Show or hide the cart counter based on whether there are items in the cart
-    cartCounter.style.display = totalQuantity === 0 ? 'none' : 'block';
-}
-
-// Function to display cart items stored in local storage on the carts page
-function displayCartItems() {
-    const cartItemsContainer = document.getElementById('tableBody');
-    const totalPriceContainer = document.querySelector('.totalPrice');
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-    let total = 0;
-
-    // check if there is anything in the cart
-    if (cartItems.length > 0) {
-        // Populate cart items dynamically
-        cartItems.forEach(item => {
-            fetchDataFromJSON('./productdb.json')
-                .then(products => {
-                    // find product details based on the pSku value stored in the local storage
-                    const product = products.find(p => p.pSku === item.pSku);
-                    if (product) {
-                        // generate html for cart page
-                        const cartItemHTML = `
-                            <tr>
-                                <td>
-                                    <div class="cart-info">
-                                        <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
-                                        <div>
-                                            <p>${product.pFullName}</p>
-                                            <small>Price: £${product.pPrice.toFixed(2)}</small>
-                                            <a href="" onclick="removeCartItem('${product.pSku}', '${item.size}')">Remove</a>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>${item.size}</td>
-                                <td>${item.quantity}</td>
-                                <td>£${(item.quantity * product.pPrice).toFixed(2)}</td>
-                            </tr>
-                        `;
-                        
-                        // Calculate the total price for the cart
-                        total += (item.quantity * product.pPrice);
-
-                        // Append the cart item HTML to the cart items container
-                        cartItemsContainer.innerHTML += cartItemHTML;
-
-                        // Calculate tax and total
-                        const tax = total * 0.2;
-                        const subtotal = total * 0.8;
-        
-                        // Update the total price table HTML
-                        const totalPriceHTML = `
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>Subtotal</td>
-                                        <td>£${(subtotal).toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tax @ 20%</td>
-                                        <td>£${tax.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total</td>
-                                        <td>£${total.toFixed(2)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        `;
-                        totalPriceContainer.innerHTML = totalPriceHTML;
-                    } else {
-                        console.error('Product not found for SKU:', item.pSku);
-                    }
-                })
-                .catch(error => console.error('Error fetching product data:', error));
+// Function check if user is logged in when Cart is clicked and redirect to Cart page or Login page
+function handleCartContainerClick() {);
+    const cartContainer = document.querySelector('.cartContainer img');
+    if (cartContainer) {
+        cartContainer.addEventListener('click', function () {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const redirectPath = loggedInUser ? './cart.html' : './login.html';
+            window.location.href = redirectPath;
         });
     }
 }
 
-// Function to remove an Item from the cart
-function removeCartItem(sku, size) {
-    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+// function to display a notification product is added cart
+function showNotification(message) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerText = message;
 
-    // Remove the item from the cart based on SKU and size
-    cartItems = cartItems.filter(item => !(item.pSku === sku && item.size === size));
+    notificationContainer.appendChild(notification);
 
-    // Save the updated cart data to local storage
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-
-    // Update the cart display on the cart page
-    displayCartItems();
-    updateCartCounter();
+    setTimeout(() => {
+        notification.classList.add('hidden');
+        setTimeout(() => {
+            notificationContainer.removeChild(notification);
+        }, 500); // fadeout animation time. needs to match CSS timing in .notification. js time is in ms css time is in s 
+    }, 4000); // time the notification is displayed in ms
 }
 
-// Function to update cart with the product SKY, size and quantity
-function updateCartItemQuantity(sku, size, newQuantity) {
-    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+// Function to check if a user is already logged in
+function checkLoggedInUser() {
+    const loggedInUser = localStorage.getItem('loggedInUser');
 
-    // Find the item in the cart based on SKU and size
-    const cartItem = cartItems.find(item => item.pSku === sku && item.size === size);
+    if (loggedInUser) {
+        updateMenuAndHideLoginMessage(loggedInUser);
+        const isLoginPage = window.location.pathname.includes('login.html');
+        if (isLoginPage) {
+            hideLoginMessage();
+        }
+    }
 
-    if (cartItem) {
-        // Update the quantity of the item
-        cartItem.quantity = parseInt(newQuantity, 10) || 0;
-
-        // Save the updated cart data to local storage
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-
-        // Update the cart display on the cart page
-        displayCartItems();
-        updateCartCounter();
+    const newLogIn = localStorage.getItem('newLogIn');
+    if (newLogIn) {
+        showNotification(`Welcome ${JSON.parse(loggedInUser).username}`);
+        localStorage.removeItem('newLogIn');
     }
 }
+
+function updateMenuAndHideLoginMessage(loggedInUser) {
+    const usernameLabel = `Hello ${JSON.parse(loggedInUser).username}`;
+    document.getElementById('menuItems').querySelector('li:last-child').innerHTML = usernameLabel;
+
+    const isLoginPage = window.location.pathname.includes('login.html');
+    if (isLoginPage) {
+        hideLoginMessage();
+    }
+}
+
+function hideLoginMessage() {
+    const loginMessage = document.querySelector('.loginMessage');
+    loginMessage.classList.add('hide');
+}
+
+//
+// Function run on index.html
+//
+
+// Function to populate the Latest Product module
+async function populateLatestProducts(productData) {
+    try {
+        // Wait for the product data to be fetched and sorted
+        const sortedProductData = await fetchAndSortProductData(productData);
+        // Select the container and row where you want to populate the latest products
+        const row = document.getElementById('latestProductsRow');
+        // Clear existing content in the row
+        row.innerHTML = '';
+
+        // Populate the Latest Product module with the 8 most recently added products
+        for (let i = 0; i < 8 && i < sortedProductData.length; i++) {
+            const product = sortedProductData[i];
+
+            // Create the product HTML dynamically
+            const productHTML = `
+                <div class="col-4">
+                    <a href="./product-details.html?sku=${product.pSku}">
+                        <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
+                        <h4>${product.pFullName}</h4>
+                        <div class="rating">
+                            ${generateStarIcons(product.pStar)}
+                        </div>
+                        <p>£${product.pPrice.toFixed(2)}</p>
+                    </a>
+                </div>
+            `;
+
+            // Append the product HTML to the row
+            row.innerHTML += productHTML;
+        }
+    } catch (error) {
+        console.error('Error fetching and populating latest products:', error);
+    }
+}
+
+// Function to fetch and sort product data
+function fetchAndSortProductData(productData) {
+    // Sorting logic remains the same
+    return productData.sort((a, b) => b.pDate - a.pDate);
+}
+
+//
+// Function run on Products page
+//
+
+// function to populate Products page with products from productdb.json
+function populateProductsPage(productData) {
+    const productRow = document.getElementById('productRow');
+    productData
+        .then(products => {
+            // Insert products into the productRow
+            products.forEach((product) => {
+                const productHTML = generateProductHTML(product);
+                productRow.insertAdjacentHTML('beforeend', productHTML);
+            });
+        })
+        .catch(error => console.error('Error fetching products:', error));
+}
+
+// Function to generate product HTML
+function generateProductHTML(product) {
+    return `
+        <div class="col-4">
+            <div class="product">
+                <a href="./product-details.html?sku=${product.pSku}">
+                    <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
+                    <h4>${product.pFullName}</h4>
+                    <div class="rating">
+                        ${generateStarIcons(product.pStar)}
+                    </div>
+                    <p>£${product.pPrice.toFixed(2)}</p>
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+//
+// Function run on product-details page
+//
 
 // Function to read SKU from URL
 function getSKUFromURL() {
@@ -262,7 +244,7 @@ function getSKUFromURL() {
 
 // Function to populate the product-details page based on the SKU passed via URL
 function fetchProductDetails(sku) {
-    fetchDataFromJSON('./productdb.json')
+    productData
         .then(products => {
             const product = products.find(product => product.pSku === sku);
             document.title = `Red Store | ${product.pFullName}`;
@@ -396,7 +378,7 @@ function addToCart(product, size, quantity) {
 
 // Function to fetch and display related products
 function fetchRelatedProducts(currentSku) {
-    fetchDataFromJSON('./productdb.json')
+    productData
         .then(products => {
             // Find the current product
             const currentProduct = products.find(product => product.pSku === currentSku);
@@ -438,66 +420,131 @@ function fetchRelatedProducts(currentSku) {
         .catch(error => console.error('Error fetching related products:', error));
 }
 
-// Function to generate product HTML
-function generateProductHTML(product) {
-    return `
-        <div class="col-4">
-            <div class="product">
-                <a href="./product-details.html?sku=${product.pSku}">
-                    <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
-                    <h4>${product.pFullName}</h4>
-                    <div class="rating">
-                        ${generateStarIcons(product.pStar)}
-                    </div>
-                    <p>£${product.pPrice.toFixed(2)}</p>
-                </a>
-            </div>
-        </div>
-    `;
+// Function to update the cart counter display
+function updateCartCounter() {
+    const cartCounter = document.querySelector('.cartCounter');
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Update the cart counter based on the total quantity in the cart
+    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+    cartCounter.innerHTML = totalQuantity.toString();
+
+    // Show or hide the cart counter based on whether there are items in the cart
+    cartCounter.style.display = totalQuantity === 0 ? 'none' : 'block';
 }
 
-// Function to populate the Latest Product module
-function populateLatestProducts() {
-    fetchAndSortProductData()
-        .then(sortedProductData => {
-            // Select the container and row where you want to populate the latest products
-            var row = document.getElementById('latestProductsRow');
+//
+// Function runs only in the Cart page
+//
 
-            // Populate the Latest Product module with the 8 most recently added products
-            for (var i = 0; i < 8 && i < sortedProductData.length; i++) {
-                var product = sortedProductData[i];
+// Function to display cart items stored in local storage on the carts page
+function displayCartItems() {
+    const cartItemsContainer = document.getElementById('tableBody');
+    const totalPriceContainer = document.querySelector('.totalPrice');
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    let total = 0;
 
-                // Create the product HTML dynamically
-                var productHTML = `
-                    <div class="col-4">
-                        <a href="./product-details.html?sku=${product.pSku}">
-                            <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
-                            <h4>${product.pFullName}</h4>
-                            <div class="rating">
-                                ${generateStarIcons(product.pStar)}
-                            </div>
-                            <p>£${product.pPrice.toFixed(2)}</p>
-                        </a>
-                    </div>
-                `;
+    // check if there is anything in the cart
+    if (cartItems.length > 0) {
+        // Populate cart items dynamically
+        cartItems.forEach(item => {
+            productData
+                .then(products => {
+                    // find product details based on the pSku value stored in the local storage
+                    const product = products.find(p => p.pSku === item.pSku);
+                    if (product) {
+                        // generate html for cart page
+                        const cartItemHTML = `
+                            <tr>
+                                <td>
+                                    <div class="cart-info">
+                                        <img src="./assets/${product.pImages[0]}" alt="${product.pFullName}">
+                                        <div>
+                                            <p>${product.pFullName}</p>
+                                            <small>Price: £${product.pPrice.toFixed(2)}</small>
+                                            <a href="" onclick="removeCartItem('${product.pSku}', '${item.size}')">Remove</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${item.size}</td>
+                                <td>${item.quantity}</td>
+                                <td>£${(item.quantity * product.pPrice).toFixed(2)}</td>
+                            </tr>
+                        `;
+                        
+                        // Calculate the total price for the cart
+                        total += (item.quantity * product.pPrice);
 
-                // Append the product HTML to the row
-                row.innerHTML += productHTML;
-            }
+                        // Append the cart item HTML to the cart items container
+                        cartItemsContainer.innerHTML += cartItemHTML;
+
+                        // Calculate tax and total
+                        const tax = total * 0.2;
+                        const subtotal = total * 0.8;
+        
+                        // Update the total price table HTML
+                        const totalPriceHTML = `
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Subtotal</td>
+                                        <td>£${(subtotal).toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax @ 20%</td>
+                                        <td>£${tax.toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>£${total.toFixed(2)}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `;
+                        totalPriceContainer.innerHTML = totalPriceHTML;
+                    } else {
+                        console.error('Product not found for SKU:', item.pSku);
+                    }
+                })
+                .catch(error => console.error('Error fetching product data:', error));
         });
+    }
 }
 
-// Function to fetch and sort product data
-function fetchAndSortProductData() {
-    return fetchDataFromJSON('./productdb.json')
-        .then(productData => {
-            // Sort the products based on the date in descending order
-            return productData.sort((a, b) => b.pDate - a.pDate);
-        })
-        .catch(error => {
-            console.error('Error fetching product data:', error);
-            throw error; // Re-throw the error to propagate it to the caller
+// Function to remove an Item from the cart
+function removeCartItem(sku, size) {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Remove the item from the cart based on SKU and size
+    cartItems = cartItems.filter(item => !(item.pSku === sku && item.size === size));
+
+    // Save the updated cart data to local storage
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    // Update the cart display on the cart page
+    displayCartItems();
+    updateCartCounter();
+}
+
+//
+// Function run on Login page
+//
+
+// Function to add Event Listners on the Login page
+function setupLoginEventListeners() {
+    const loginButton = document.getElementById('login');
+    const signupButton = document.getElementById('signup');
+
+    loginButton.addEventListener('click', handleLogin);
+    signupButton.addEventListener('click', handleSignup);
+
+    const title = document.querySelectorAll(".tab-header .title");
+    title.forEach(function (title) {
+        title.addEventListener("click", function () {
+            const tabName = title.textContent.toLowerCase().trim();
+            openTab(tabName);
         });
+    });
 }
 
 // function to display login or sign-up fields on the login page
@@ -525,7 +572,6 @@ async function handleLogin() {
     try {
         // Fetch user data from user.json
         const users = await fetchDataFromJSON('./user.json');
-
         const matchedUser = users.find(user => user.email === enteredEmail && user.password === enteredPassword);
 
         if (matchedUser) {
@@ -549,43 +595,4 @@ async function handleLogin() {
 function handleSignup() {
     // signup code goes here
     console.log('Signup button clicked');
-}
-
-// Function to check if a user is already logged in
-function checkLoggedInUser() {
-    const loggedInUser = localStorage.getItem('loggedInUser');
-    const newLogIn = localStorage.getItem('newLogIn');
-    if (loggedInUser) {
-        // User is logged in, update menu label and hide loginMessage
-        const usernameLabel = `Hello ${JSON.parse(loggedInUser).username}`;
-        document.getElementById('menuItems').querySelector('li:last-child').innerHTML = usernameLabel;
-
-        const isLoginPage = window.location.pathname.includes('login.html');
-        if (isLoginPage) {
-            const loginMessage = document.querySelector('.loginMessage');
-            loginMessage.classList.add('hide');
-        }
-    }
-
-    if (newLogIn) {
-        showNotification(`Welcome ${JSON.parse(loggedInUser).username}`);
-        localStorage.removeItem('newLogIn');
-    }
-}
-
-// function to display a notification product is added cart
-function showNotification(message) {
-    const notificationContainer = document.getElementById('notification-container');
-    const notification = document.createElement('div');
-    notification.classList.add('notification');
-    notification.innerText = message;
-
-    notificationContainer.appendChild(notification);
-
-    setTimeout(() => {
-        notification.classList.add('hidden');
-        setTimeout(() => {
-            notificationContainer.removeChild(notification);
-        }, 500); // fadeout animation time. needs to match CSS timing in .notification. js time is in ms css time is in s 
-    }, 4000); // time the notification is displayed in ms
 }
