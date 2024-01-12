@@ -169,7 +169,6 @@ p {
 .col-3 {
     flex-basis: 31%;
     min-width: 250px;
-    height: 520px;
     margin-bottom: 30px;
     cursor: pointer;
     position: relative;
@@ -611,6 +610,7 @@ input:focus {
     margin: 5px 0;
     border-radius: 5px;
     transition: opacity 0.5s ease-in-out;
+    text-align: center;
 }
 
 #notification-container2 {
@@ -630,6 +630,7 @@ input:focus {
     border-radius: 5px;
     transition: opacity 0.5s ease-in-out;
     box-shadow: 0 0 10px #8a8a8a;
+    text-align: center;
 }
 
 .notification2::before {
@@ -937,18 +938,36 @@ td:last-child, th:last-child {
     .header nav ul li {
         color: #fff;
     }
+
+    .col-4 {
+        min-width: auto;
+    }
 }
 
-@media only screen and (min-width: 620px) and (max-width: 769px){
+@media only screen and (min-width: 720px) and (max-width: 769px){
 
     .row {
         margin: 10px;
         padding: 0;
         flex-basis: 20%;
     }
+
     .col-3 {
         min-width: 200px;
     }
+
+    .testimonial .small-container .row .col-3 {
+        min-width: 350px;
+    }
+
+}
+
+@media only screen and (min-width: 620px) and (max-width: 719px){
+
+    .testimonial .small-container .row .col-3 {
+        flex-basis: 90%;
+    }
+
 }
 
 @media only screen and (min-width: 520px) and (max-width: 619px) {
@@ -971,6 +990,10 @@ td:last-child, th:last-child {
     .singleProduct h1 {
         font-size: 26px;
         line-height: 32px;
+    }
+
+    .testimonial .small-container .row .col-3 {
+        flex-basis: 90%;
     }
 }
 
@@ -1000,5 +1023,9 @@ td:last-child, th:last-child {
 
     .cart-info small {
         display: none;
+    }
+
+    .hLogin .container .row .col-2 {
+        flex-basis: 85%;
     }
 }
