@@ -169,6 +169,7 @@ p {
 .col-3 {
     flex-basis: 31%;
     min-width: 250px;
+    height: 520px;
     margin-bottom: 30px;
     cursor: pointer;
     position: relative;
@@ -324,7 +325,7 @@ small {
 }
 
 .col-3 p {
-    font-size: 12px;
+    font-size: 14px;
     margin: 12px 0;
     color: #777;
 }
