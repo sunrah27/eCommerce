@@ -154,5 +154,18 @@
     "pImages": ["10121.webp", "10122.webp", "10123.webp", "10124.webp"],
     "pStar": 4,
     "pDate": 20230112
+  },
+  {
+    "pSku": "10130",
+    "pFullName": "Smart Band 4",
+    "pDetail": "The Mi Smart Band 4 features a 39.9% larger (than Mi Band 3) AMOLED colour full-touch display with adjustable brightness, so everything is clear as can be.",
+    "pDetailList": ["Wireless, Temperature, Bluetooth, Speedometer, Altimeter, Stopwatch, GPS, Clock, Smartphone Compatibility, Calorie Monitor."],
+    "pDetailMaterials": "Plastic, Aluminium.",
+    "pPrice": 69.99,
+    "pSize": ["L", "XL", "XXL"],
+    "pType": "watch",
+    "pImages": ["10131.jpg", "10132.jpg", "10133.jpg", "10134.jpg"],
+    "pStar": 4,
+    "pDate": 20230105
   }
 ]

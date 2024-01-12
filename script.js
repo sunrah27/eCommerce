@@ -240,8 +240,20 @@ function fetchAndSortProductData(productData) {
 // Function run on Products page
 //
 
-// function to populate Products page with filters and sort
+// Get URL parameters function
+function getURLParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+// Function to populate Products page with filters and sort
 function populateProductsPage(productData, filterType = 'all', sortType = 'default') {
+    // Get filter parameter from the URL, if available
+    const urlFilterType = getURLParameter('filter');
+
+    // Use the filter from the URL if available, otherwise use the default
+    filterType = urlFilterType || filterType;
+
     const productRow = document.getElementById('productRow');
     
     // Clear existing content in the row
@@ -300,6 +312,8 @@ function setupFilterAndSortEventListeners(productData) {
     filterByTypeDropdown.addEventListener('change', function () {
         const selectedType = filterByTypeDropdown.value;
         const selectedSort = sortByDropdown.value;
+        // Update the URL with the selected filter
+        window.history.replaceState({}, '', `?filter=${selectedType}&sort=${selectedSort}`);
         // Call the function to populate products based on filter and sort
         populateProductsPage(productData, selectedType, selectedSort);
     });
@@ -308,6 +322,8 @@ function setupFilterAndSortEventListeners(productData) {
     sortByDropdown.addEventListener('change', function () {
         const selectedType = filterByTypeDropdown.value;
         const selectedSort = sortByDropdown.value;
+        // Update the URL with the selected sort
+        window.history.replaceState({}, '', `?filter=${selectedType}&sort=${selectedSort}`);
         // Call the function to populate products based on filter and sort
         populateProductsPage(productData, selectedType, selectedSort);
     });
