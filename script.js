@@ -739,7 +739,7 @@ function setupContactEventListeners() {
 function checkSelectedOptions() {
     const productNo = document.getElementById('productNo');
     const orderNo = document.getElementById('orderNo');
-    const selectedOption = dropdown.value;
+    const selectedOption = document.getElementById('reason').value;
 
     if (selectedOption === 'product') {
         productNo.classList.remove('hidden');
