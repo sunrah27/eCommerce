@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Check if the current page is product-details.html
     const isProductDetailsPage = window.location.pathname.includes('product-details.html');
     if (isProductDetailsPage) {
-        const sku = getSKUFromURL();
+        const sku = getURLParameter('sku');
         fetchProductDetails(sku, productData);
         fetchRelatedProducts(sku, productData);
     }
@@ -199,7 +199,6 @@ async function populateLatestProducts(productData) {
     try {
         // Wait for the product data to be fetched and sorted
         const sortedProductData = await fetchAndSortProductData(productData);
-        // Select the container and row where you want to populate the latest products
         const row = document.getElementById('latestProductsRow');
         // Clear existing content in the row
         row.innerHTML = '';
@@ -240,23 +239,34 @@ function fetchAndSortProductData(productData) {
 // Function run on Products page
 //
 
-// Get URL parameters function
-function getURLParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
+// Function to add event listeners for filter and sort
+function setupFilterAndSortEventListeners(productData) {
+    const filterByTypeDropdown = document.getElementById('filterByType');
+    const sortByDropdown = document.getElementById('sortBy');
+
+    filterByTypeDropdown.addEventListener('change', onDropdownChange);
+    sortByDropdown.addEventListener('change', onDropdownChange);
+
+    // Event listener function
+    function onDropdownChange() {
+        const selectedType = filterByTypeDropdown.value;
+        const selectedSort = sortByDropdown.value;
+        
+        // Update the URL with the selected filter or sort
+        window.history.replaceState({}, '', `?filter=${selectedType}&sort=${selectedSort}`);
+        
+        // Call the function to populate products based on filter and sort
+        populateProductsPage(productData, selectedType, selectedSort);
+    }
 }
 
 // Function to populate Products page with filters and sort
 function populateProductsPage(productData, filterType = 'all', sortType = 'default') {
-    // Get filter parameter from the URL, if available
-    const urlFilterType = getURLParameter('filter');
-
+   
     // Use the filter from the URL if available, otherwise use the default
-    filterType = urlFilterType || filterType;
+    filterType = getURLParameter('filter') || filterType;
 
     const productRow = document.getElementById('productRow');
-    
-    // Clear existing content in the row
     productRow.innerHTML = '';
 
     // Apply filter by type
@@ -270,6 +280,12 @@ function populateProductsPage(productData, filterType = 'all', sortType = 'defau
         const productHTML = generateProductHTML(product);
         productRow.insertAdjacentHTML('beforeend', productHTML);
     });
+}
+
+// Get URL parameters function
+function getURLParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
 }
 
 // Function to generate product HTML
@@ -303,32 +319,6 @@ function populateFilterByTypeDropdown(productData) {
     });
 }
 
-// Function to add event listeners for filter and sort
-function setupFilterAndSortEventListeners(productData) {
-    const filterByTypeDropdown = document.getElementById('filterByType');
-    const sortByDropdown = document.getElementById('sortBy');
-
-    // Event listener for filter by type
-    filterByTypeDropdown.addEventListener('change', function () {
-        const selectedType = filterByTypeDropdown.value;
-        const selectedSort = sortByDropdown.value;
-        // Update the URL with the selected filter
-        window.history.replaceState({}, '', `?filter=${selectedType}&sort=${selectedSort}`);
-        // Call the function to populate products based on filter and sort
-        populateProductsPage(productData, selectedType, selectedSort);
-    });
-
-    // Event listener for sort
-    sortByDropdown.addEventListener('change', function () {
-        const selectedType = filterByTypeDropdown.value;
-        const selectedSort = sortByDropdown.value;
-        // Update the URL with the selected sort
-        window.history.replaceState({}, '', `?filter=${selectedType}&sort=${selectedSort}`);
-        // Call the function to populate products based on filter and sort
-        populateProductsPage(productData, selectedType, selectedSort);
-    });
-}
-
 // Function to sort products based on selected option
 function sortProducts(products, sortType) {
     switch (sortType) {
@@ -348,12 +338,6 @@ function sortProducts(products, sortType) {
 //
 // Function run on product-details page
 //
-
-// Function to read SKU from URL
-function getSKUFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('sku');
-}
 
 // Function to populate the product-details page based on the SKU passed via URL
 function fetchProductDetails(sku, productData) {
@@ -396,20 +380,16 @@ function fetchProductDetails(sku, productData) {
                 <p>${product.pDetailMaterials}</p>
             </div>
         `;
+
         productDetailsRow.innerHTML = productDetailsHTML;
 
-        // add Event Listeners
-        const smallImagesContainer = document.getElementById('smallImages');
-        const mainProductImage = document.getElementById('mainProduct');
-        const addToCartBtn = document.getElementById('addToCartBtn');
-
         // Change the main product image on product-details.html
-        if (smallImagesContainer) {
-            smallImagesContainer.addEventListener('click', function (event) {
+        if (smallImages) {
+            smallImages.addEventListener('click', function (event) {
                 var target = event.target.closest('.small-img-col');
                 if (target) {
                     var newSrc = target.querySelector('img').src;
-                    mainProductImage.src = newSrc;
+                    mainProduct.src = newSrc;
                 }
             });
         } else {
@@ -443,10 +423,7 @@ function fetchProductDetails(sku, productData) {
                         break;
                 };
 
-                // Add the item to the cart
                 addToCart(product, selectedSize, quantity);
-
-                // You can also provide feedback to the user, such as a confirmation message
                 showNotification(`${quantity} ${product.pFullName}(s) size ${selectedSize} added to the cart!`);
             });
         } else {
@@ -494,7 +471,6 @@ function fetchRelatedProducts(currentSku, productData) {
 
         // Display up to 4 related products
         const maxRelatedProducts = 4;
-        const relatedProductsRow = document.getElementById('relatedProductsRow');
 
         for (let i = 0; i < maxRelatedProducts && i < relatedProducts.length; i++) {
             const relatedProduct = relatedProducts[i];
@@ -615,7 +591,7 @@ function displayCartItems(productData) {
 function removeCartItem(sku, size, productData) {
     let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
-    // Remove the item from the cart based on SKU and size
+    // Remove item from the cart based on SKU and size
     cartItems = cartItems.filter(item => !(item.pSku === sku && item.size === size));
 
     // Save the updated cart data to local storage
@@ -627,13 +603,10 @@ function removeCartItem(sku, size, productData) {
 }
 
 function addCartEventListners() {
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    checkoutBtn.addEventListener('click', checkoutMessage);
-}
-
-function checkoutMessage (event) {
-    event.preventDefault();
-    showNotification2('Thank you for your purchase.')
+    checkoutBtn.addEventListener('click', () => {
+        event.preventDefault();
+        showNotification2('Thank you for your purchase.');
+    })
 }
 
 //
@@ -642,11 +615,8 @@ function checkoutMessage (event) {
 
 // Function to add Event Listenrs on the Login page
 function setupLoginEventListeners() {
-    const loginButton = document.getElementById('login');
-    const signupButton = document.getElementById('signup');
-
-    loginButton.addEventListener('click', handleLogin);
-    signupButton.addEventListener('click', handleSignup);
+    login.addEventListener('click', handleLogin);
+    signupBlogintton.addEventListener('click', handleSignup);
 
     const title = document.querySelectorAll(".tab-header .title");
     title.forEach(function (title) {
@@ -728,10 +698,7 @@ function handleSignup(event) {
 
 // add event listners to the contact us page
 function setupContactEventListeners() {
-    const dropdown = document.getElementById('reason');
-    const contactUs = document.getElementById('contactUs');
-
-    dropdown.addEventListener('change', checkSelectedOptions);
+    reason.addEventListener('change', checkSelectedOptions);
     contactUs.addEventListener('click', contactMessage);
 }
 
@@ -745,7 +712,6 @@ function checkSelectedOptions() {
         productNo.classList.remove('hidden');
         orderNo.classList.add('hidden');
     } else if (selectedOption === 'order') {
-        console.log('order match');
         orderNo.classList.remove('hidden');
         productNo.classList.add('hidden');
     } else {
@@ -771,10 +737,4 @@ function contactMessage(event) {
     } else {
         message.classList.remove('hide');
     };
-}
-
-// Fucntion added to clear local storage via console
-function clearLocalStorage() {
-    localStorage.clear();
-    location.reload(true);
 }

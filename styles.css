@@ -997,6 +997,13 @@ td:last-child, th:last-child {
     }
 }
 
+@media only screen and (max-width: 594px) {
+    .hProduct .row-2 {
+        display: flex;
+        justify-content: center;
+    }
+}
+
 @media only screen and (max-width: 519px) {
     .col-2 {
         flex-basis: 80%;
@@ -1007,8 +1014,34 @@ td:last-child, th:last-child {
     }
 }
 
-@media only screen and (max-width: 300px) {
+@media only screen and (max-width: 484px) {
+    .hProduct .row-2 {
+        display: flex;
+        flex-direction: column;
+    }
 
+    .filterOptions {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    
+    .filterOptions p {
+        margin: 5px;    
+    }
+
+    .filterOptions select {
+        width: 250px;
+    }
+
+}
+
+@media only screen and (max-width: 334px) {
+    .filterOptions select {
+        width: 200px;
+    }
+}
+
+@media only screen and (max-width: 300px) {
     .row .col-2, .row .col-3, .row .col-4 {
         flex-basis: 90%;
         padding-left: 10px;
