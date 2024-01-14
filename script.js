@@ -616,7 +616,7 @@ function addCartEventListners() {
 // Function to add Event Listenrs on the Login page
 function setupLoginEventListeners() {
     login.addEventListener('click', handleLogin);
-    signupBlogintton.addEventListener('click', handleSignup);
+    // signupBlogintton.addEventListener('click', handleSignup);
 
     const title = document.querySelectorAll(".tab-header .title");
     title.forEach(function (title) {
