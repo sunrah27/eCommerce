@@ -24,13 +24,13 @@ Site has following features completed:
 - [x] Build Products Details page `product-details.html?sku=xxxxx`
 - [x] Build Cart page `cart.html`
 - [x] Build Login page `login.html`
-- [x] Build Contact page
+- [x] Build Contact page `contact.html`
 - [x] Create `productDB.json` file
 - [x] Refactor Products page to populate from productDB
 - [x] Refactor Product Details page to populate using sku passed va URI
 - [x] Refactor Homepage to pull product data from producDB
 - [x] Refactor Related Products on Product Details page based on pType
-- [x] Code Cart functionality
+- [x] Code shopping Cart functionality
 - [x] Create `userDB.json`
 - [x] Code User login functionality
 - [x] Code filter feature in the Products Page
