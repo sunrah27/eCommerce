@@ -24,7 +24,7 @@ Site has following features completed:
 - [x] Build Products Details page `product-details.html?sku=xxxxx`
 - [x] Build Cart page `cart.html`
 - [x] Build Login page `login.html`
-- [x] Build Contact page
+- [x] Build Contact page `contact.html`
 - [x] Create `productDB.json` file
 - [x] Refactor Products page to populate from productDB
 - [x] Refactor Product Details page to populate using sku passed va URI
@@ -107,7 +107,7 @@ This module proved more difficult then I had first intended. I was able to displ
 const relatedProducts = productData.filter(product => product.pType === currentProduct.pType && product.pSku !== currentSku);
 ```
 
-#### Lates Products Module
+#### Latest Products Module
 Building the Latest Product Module was pretty straight forward after Related Products Module. However, I started noticing a lot of console errors appearing. I noticed I had JavaScript code which should run only on specific pages. Thus began the first of many JavaScript refactoring and breaking my site.
 
 #### Building the Shopping Cart
