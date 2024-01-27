@@ -66,7 +66,7 @@ Before I could even touch JavaScript I had to build my `peoductsDB.json` file. B
 But I would ultimately modify the productsDB and remove the two Product Name and settle on one. I also needed to include a data/time with every product as my Homepage had a latest product module. I debated weather to hard code the rating stars but ultimate decided to incluide it as part of the DB. One odd issue I came across later was tha Product Description. i was unable to include any bullet points, this forced me to spllit it into three differnt properties. Product Description, Product List and Product Materials. A surprise outcome of the DB was the easy way to manage the product images. Renaming all of the prduct images with Product SKU made it significantly easier to fetch via JS.
 
 Final Structure of the ProductDB;
-
+```
 - Unique Product ID: Text
 - Product Name: Text
 - Product Description: Text
@@ -78,7 +78,7 @@ Final Structure of the ProductDB;
 - Product Price: Text
 - Product Ratings: Text
 - Product Date: Text
-
+```
 ### Adding JavaScript
 ------
 
