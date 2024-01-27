@@ -67,17 +67,17 @@ But I would ultimately modify the productsDB and remove the two Product Name and
 
 Final Structure of the ProductDB;
 ```
-- Unique Product ID: Text
-- Product Name: Text
-- Product Description: Text
-- Product List: Array
-- Product Materials: Text
-- Product Type: Text
-- Product Sizes: Array
-- Product Images: Array
-- Product Price: Text
-- Product Ratings: Text
-- Product Date: Text
+Unique Product ID: Text
+Product Name: Text
+Product Description: Text
+Product List: Array
+Product Materials: Text
+Product Type: Text
+Product Sizes: Array
+Product Images: Array
+Product Price: Text
+Product Ratings: Text
+Product Date: Text
 ```
 ### Adding JavaScript
 ------
