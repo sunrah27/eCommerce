@@ -61,9 +61,9 @@ Howevere, my site only had one product and a lot of non-fuctional links. I was s
 
 ### Creating JSON files for Products
 ------
-Before I could even touch JavaScript I had to build my `peoductsDB.json` file. Based on my designs I managed to outline few informatin I required for every product.
+Before I could even touch JavaScript I had to build my `peoductsDB.json` file. Based on my designs I managed to outline few information I required for every product.
 
-But I would ultimately modify the productsDB and remove the two Product Name and settle on one. I also needed to include a data/time with every product as my Homepage had a latest product module. I debated weather to hard code the rating stars but ultimate decided to incluide it as part of the DB. One odd issue I came across later was tha Product Description. i was unable to include any bullet points, this forced me to spllit it into three differnt properties. Product Description, Product List and Product Materials. A surprise outcome of the DB was the easy way to manage the product images. Renaming all of the prduct images with Product SKU made it significantly easier to fetch via JS.
+But I would ultimately modify the productsDB and remove the two Product Name entries and settle on one. I also needed to include data/time with every product as my Homepage had a latest product module. I debated weather to hard code the ratings amd ultimately decided to incluide it as part of the DB. One odd issue I came across later was tha Product Description. I was unable to include any bullet points, this forced me to spllit it into three differnt properties. Product Description, Product List and Product Materials. A surprise outcome of the DB was the easy way to manage product images. Renaming all of the images with Product SKU made it significantly easier to fetch using JS.
 
 Final Structure of the ProductDB;
 ```
@@ -83,10 +83,10 @@ Product Date: Text
 ------
 
 #### Building Products Page
-Ah, the land of mangic. I decided to populate the Products Page with the products in the `productsDB.json`. This was not a complicated task as all I had to do was fetch the data form the JSON file, store it in an object and then reference the information I need. I found myself consolidating a lot of my HTML code and creating simple templates which I can repeat and generate HTML to display all of the products. 
+Ah, the land of mangic. I decided to populate the Products Page with the products in the `productsDB.json`. This was not a complicated task as all I had to do was to read the data form the JSON file, store it in an object and then reference the information I need. I found myself consolidating a lot of my HTML code and creating simple templates which was looped over multiple times to generate HTML to display all of the products. 
 
 #### Building Product Details Page
-Once done I realised I could over come another issue I was having. What if I passed the product SKU via URL to the Product Details Page and then read the SKU in the URL to display the relevant product information. This will mean I only need one Product Details Page and I can also use the product SKU on the Products Page as part of the anchor link.
+Once done I realised I could overcome another issue I was having. What if I passed the product SKU via URL to the Product Details Page and then read the SKU in the URL to display the relevant product information. This will mean I only need one Product Details Page and I can also use the product SKU on the Products Page as part of the anchor link.
 
 I needed to figure out how to pass information via URL and also how to extract this information. After some research I wrote the following fuction:
 
@@ -97,10 +97,10 @@ function getSKUFromURL() {
     return urlParams.get('sku');
 }
 ```
-White this I was now able to search the productDB and display the relevant information. Next step build the Related Products module.
+With this I was now able to search the productDB and display the relevant information. Next step build the Related Products module.
 
 #### Related Products Module
-This module proved more difficult then I had first intended. I was able to display all products related to the product displayed on the module but I was also displaying the existing product. After a lot of time tinkering with JS and pulling my hair out I realised all I needed to do was add `!== currentSku` when declaring the relatedProducts object.
+This module proved more difficult then I had first intended. I was able to display all products related to the product on the page but I was also displaying the existing product. After a lot of time tinkering with JS and pulling my hair out I realised all I needed to do was add `!== currentSku` when declaring the relatedProducts object. Some solutions are strangly simple.
 
 ```javascript
 // Filter products based on the pType of the current product
@@ -108,7 +108,7 @@ const relatedProducts = productData.filter(product => product.pType === currentP
 ```
 
 #### Latest Products Module
-Building the Latest Product Module was pretty straight forward after Related Products Module. However, I started noticing a lot of console errors appearing. I noticed I had JavaScript code which should run only on specific pages. Thus began the first of many JavaScript refactoring and breaking my site.
+Building the Latest Product Module was pretty straight forward after Related Products Module. However, I started noticing a lot of console errors appearing. I had JavaScript code which should run only on specific pages. Thus began the first of many JavaScript refactoring and breaking my site.
 
 #### Building the Shopping Cart
 Building the Shopping Cart was pretty simple. I knew from the start I am going to use the browsers local storage. The main issue I began to have was the EventListner not attaching to the button on the Product Details page. After a lot of debugging I discovered the issue was due to the Button HTML being generated using JS in the Products Details page. To resolve this issue I was finally forced to clean up my JavaScript and break my code in to smaller functions. Adding Async and Wait to functions to ensure JS codes only ran after the pages were loaded. I also took time to refactor my code and reduce duplication. One major change was storing the `productDB.json` to a single object called `productData` reducing multiple function calls. I also removed as much code outside of the `document.addEventListener('DOMContentLoaded', async function () { }` as possible. This helped me finally resolve the issue with being able to add an item to the Shopping Cart.
@@ -133,3 +133,13 @@ The final feature left to code was the product filters and the product sort whic
 
 - `function sortProducts(products, sortType)`
 ⋅⋅⋅ Function to sort products based on default, price (high and low) and ratings
+
+## Future development
+Once I have enough knowledge of Python and MySQL I plan to host a DB which will allow;
+- User Registration
+- User Accounts Page
+- User Purchase History
+- Products database
+- Product Update UI
+- Sales Dashboard
+- Email functionality
