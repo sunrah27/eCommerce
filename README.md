@@ -39,6 +39,16 @@ Site has following features completed:
 - [x] Added pop-up notification after login
 - [x] Added pop-up notification after adding item to shopping basket
 
+## New Features in V2.0
+- [x] Updated login and registration to offer full login and registration functionality replacing `userDB.json`
+- [x] Login and Registration is done using a `Flask API` and stored in `MySQL Database`
+- [ ] Add logic to check for session cookie if user has logged in
+- [ ] Implement Accounts page
+- [ ] Allow registered users to change personal information
+- [ ] Implement Purchase history
+
+Site is now linked with another project [flaskapp](https://github.com/sunrah27/flaskapp)
+
 ## Detailed breakdown of website development
 
 ### Inspiration
