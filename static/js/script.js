@@ -616,6 +616,7 @@ function addCartEventListners() {
 // Function to add Event Listenrs on the Login page
 function setupLoginEventListeners() {
     login.addEventListener('click', handleLogin);
+    signup.addEventListener('click', handleSignup);
     // signupBlogintton.addEventListener('click', handleSignup);
     const title = document.querySelectorAll(".tab-header .title");
     title.forEach(function (title) {
@@ -647,7 +648,7 @@ function openTab(tabName) {
 
 // Funciton to hash the password
 function hashPassword(password) {
-    return sha256(password);
+    return CryptoJS.SHA256(password).toString();
 }
 
 // Function to handle the login process
@@ -656,7 +657,7 @@ async function handleLogin(event) {
     // Get the entered email and password
     const enteredEmail = document.getElementById('email').value;
     const enteredPassword = document.getElementById('password').value;
-    const hashPassword =  hashPassword(enteredPassword);
+    const passwordHash =  hashPassword(enteredPassword);
     try {
         const response = await fetch(`https://redstoreapi.onrender.com/api/v1/login`, {
             method: 'POST',
@@ -664,8 +665,8 @@ async function handleLogin(event) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: document.getElementById('email').value,
-                password: hashPassword(document.getElementById('password').value)
+                email: enteredEmail,
+                password: passwordHash
             })
         });
 
@@ -679,23 +680,6 @@ async function handleLogin(event) {
             const loginMessage = document.querySelector('#loginMessage');
             loginMessage.classList.remove('hide')
         }
-
-        // // Fetch user data from user.json
-        // const users = await fetchDataFromJSON('./user.json');
-        // const matchedUser = users.find(user => user.email === enteredEmail && user.password === enteredPassword);
-
-        // if (matchedUser) {
-        //     // Store the session to local storage
-        //     localStorage.setItem('loggedInUser', JSON.stringify(matchedUser));
-
-        //     // Redirect to homepage
-        //     localStorage.setItem('newLogIn', 1);
-        //     window.location.href = './index.html';
-        // } else {
-        //     // Display the loginMessage by removing the .hide class
-        //     const loginMessage = document.querySelector('.loginMessage');
-        //     loginMessage.classList.remove('hide');
-        // }
     } catch (error) {
         console.error('Error fetching user data:', error);
     }
@@ -704,17 +688,75 @@ async function handleLogin(event) {
 // Function to handle the signup process
 function handleSignup(event) {
     event.preventDefault();
-    const inputFields = document.querySelectorAll('#ufullname, #uemail, #upassword, #confirmPassword');
+    
     const message = document.querySelector('#signupMessage');
+    const passwordChheck = checkPassword();
+    const checkInput = inputCheck();
 
-    if(inputFields[0].value !== '' || inputFields[1].value !== '' || inputFields[2].value !== '' || inputFields[3].value !== '' ) {
-        showNotification2('Thank you for registering an account.');
-        inputFields.forEach(function (inputField) {
-            inputField.value = '';
-        })
-        message.classList.add('hide');
-    } else {
+    if (!passwordChheck && !checkInput) {
         message.classList.remove('hide');
+    } else {
+        message.classList.add('hide');
+        registration();
+    }
+}
+
+function registration() {
+    const firstName = document.querySelector('#ufname').value;
+    const lastName = document.querySelector('#ulname').value;
+    const email = document.querySelector('#uemail').value;
+    const password = document.querySelector('#upassword').value;
+    const confirmedPassword = document.querySelector('#confirmPassword').value;
+    const checkBox = document.querySelector('#confirmBox').checked;
+
+    const passwordHash = hashPassword(password);
+    const confirmHash = hashPassword(confirmedPassword)
+
+    const userData = {
+        firstname: firstName,
+        lastname: lastName,
+        email: email,
+        password: passwordHash,
+        confirmedPassword: confirmHash,
+        checkBox: checkBox
+    };
+
+    // Make a POST request to the API
+    fetch('https://redstoreapi.onrender.com/api/v1/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle API response data here
+        window.location.href = './index.html';
+    })
+    .catch(error => {
+        // Handle errors here
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}
+
+function inputCheck() {
+    const inputFields = document.querySelectorAll('#ufname, #ulname, #uemail, #upassword, #confirmPassword, #confirmBox');
+
+    if(inputFields[0].value !== '' || 
+       inputFields[1].value !== '' || 
+       inputFields[2].value !== '' || 
+       inputFields[3].value !== '' || 
+       inputFields[4].value !== '' || 
+       !inputFields[5].checked) {
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -729,10 +771,12 @@ function checkPassword() {
         passwordInput.classList.add('password-mismatch');
         confirmPasswordInput.classList.add('password-mismatch');
         passwordMessage.classList.remove('hide');
+        return false; // Passwords don't match, return false
     } else {
         passwordInput.classList.remove('password-mismatch');
         confirmPasswordInput.classList.remove('password-mismatch');
         passwordMessage.classList.add('hide');
+        return true; // Passwords match, return true
     }
 }
 

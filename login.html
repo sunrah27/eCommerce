@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cec2b045b4.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="./static/js/script.js"></script>
     <title>Red Store | Login</title>
 </head>
@@ -63,11 +64,14 @@
                             </form>
                             <form>
                                 <div class="form-input sign-up">
-                                    <input id="ufullname" type="text" placeholder="please enter your fullname">
-                                    <input id="uemail" type="email" placeholder="please enter your email" autocomplete="username">
-                                    <input id="upassword" type="password" name="password" placeholder="enter a password" autocomplete="current-password">
-                                    <input id="confirmPassword" type="password" name="confirmPassword" placeholder="confirm your password" autocomplete="new-password">
+                                    <input id="ufname" type="text" placeholder="please enter your firstname" autocomplete="given-name" required>
+                                    <input id="ulname" type="text" placeholder="please enter your lastname" autocomplete="family-name" required>
+                                    <input id="uemail" type="email" placeholder="please enter your email" autocomplete="username" required>
+                                    <input id="upassword" type="password" name="password" placeholder="enter a password" autocomplete="new-password" required>
+                                    <input id="confirmPassword" type="password" name="confirmPassword" placeholder="confirm your password" autocomplete="new-password" required>
+                                    <input id="confirmBox" type="text" name="confirmRegistration" class="hide">
                                     <p id="signupMessage" class="inputMessage hide">Please complete all of the fields</p>
+                                    <p id="apiMessage" class="inputMessage hide">Email address is already registered</p>
                                     <button id="signup" class="btn">Sign-up</button>
                                 </div>
                             </form>
