@@ -617,7 +617,6 @@ function addCartEventListners() {
 function setupLoginEventListeners() {
     login.addEventListener('click', handleLogin);
     // signupBlogintton.addEventListener('click', handleSignup);
-
     const title = document.querySelectorAll(".tab-header .title");
     title.forEach(function (title) {
         title.addEventListener("click", function () {
@@ -625,6 +624,9 @@ function setupLoginEventListeners() {
             openTab(tabName);
         });
     });
+    // Add event listeners to password fields
+    document.querySelector('#upassword').addEventListener('input', checkPassword);
+    document.querySelector('#confirmPassword').addEventListener('input', checkPassword);
 }
 
 // function to display login or sign-up fields on the login page
@@ -643,30 +645,57 @@ function openTab(tabName) {
     }
 }
 
+// Funciton to hash the password
+function hashPassword(password) {
+    return sha256(password);
+}
+
 // Function to handle the login process
 async function handleLogin(event) {
     event.preventDefault();
     // Get the entered email and password
     const enteredEmail = document.getElementById('email').value;
     const enteredPassword = document.getElementById('password').value;
-
+    const hashPassword =  hashPassword(enteredPassword);
     try {
-        // Fetch user data from user.json
-        const users = await fetchDataFromJSON('./user.json');
-        const matchedUser = users.find(user => user.email === enteredEmail && user.password === enteredPassword);
+        const response = await fetch(`https://redstoreapi.onrender.com/api/v1/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: document.getElementById('email').value,
+                password: hashPassword(document.getElementById('password').value)
+            })
+        });
 
-        if (matchedUser) {
-            // Store the session to local storage
-            localStorage.setItem('loggedInUser', JSON.stringify(matchedUser));
+        const responseData = await response.json();
 
-            // Redirect to homepage
-            localStorage.setItem('newLogIn', 1);
+        if(response.ok) {
+            // If login is successful, redirect to homepage
             window.location.href = './index.html';
         } else {
             // Display the loginMessage by removing the .hide class
-            const loginMessage = document.querySelector('.loginMessage');
-            loginMessage.classList.remove('hide');
+            const loginMessage = document.querySelector('#loginMessage');
+            loginMessage.classList.remove('hide')
         }
+
+        // // Fetch user data from user.json
+        // const users = await fetchDataFromJSON('./user.json');
+        // const matchedUser = users.find(user => user.email === enteredEmail && user.password === enteredPassword);
+
+        // if (matchedUser) {
+        //     // Store the session to local storage
+        //     localStorage.setItem('loggedInUser', JSON.stringify(matchedUser));
+
+        //     // Redirect to homepage
+        //     localStorage.setItem('newLogIn', 1);
+        //     window.location.href = './index.html';
+        // } else {
+        //     // Display the loginMessage by removing the .hide class
+        //     const loginMessage = document.querySelector('.loginMessage');
+        //     loginMessage.classList.remove('hide');
+        // }
     } catch (error) {
         console.error('Error fetching user data:', error);
     }
@@ -675,11 +704,11 @@ async function handleLogin(event) {
 // Function to handle the signup process
 function handleSignup(event) {
     event.preventDefault();
-    const inputFields = document.querySelectorAll('#ufullname, #uemail, #upassword, #uaddress1, #ucity, #upostcode');
-    const message = document.querySelector('.loginMessage2');
+    const inputFields = document.querySelectorAll('#ufullname, #uemail, #upassword, #confirmPassword');
+    const message = document.querySelector('#signupMessage');
 
-    if(inputFields[0].value !== '' || inputFields[1].value !== '' || inputFields[2].value !== '' || inputFields[3].value !== '' || inputFields[4].value !== '' || inputFields[5].value !== '' ) {
-        showNotification2('Thank you registering an account.');
+    if(inputFields[0].value !== '' || inputFields[1].value !== '' || inputFields[2].value !== '' || inputFields[3].value !== '' ) {
+        showNotification2('Thank you for registering an account.');
         inputFields.forEach(function (inputField) {
             inputField.value = '';
         })
@@ -687,9 +716,24 @@ function handleSignup(event) {
     } else {
         message.classList.remove('hide');
     }
-    console.log('poke');
-    console.log(inputFields);
-    console.log(message)
+}
+
+function checkPassword() {
+    const password = document.querySelector('#upassword').value;
+    const confirmPassword = document.querySelector('#confirmPassword').value;
+    const passwordInput = document.querySelector('#upassword');
+    const confirmPasswordInput = document.querySelector('#confirmPassword');
+    const passwordMessage = document.querySelector('#signupMessage');
+
+    if (password !== confirmPassword) {
+        passwordInput.classList.add('password-mismatch');
+        confirmPasswordInput.classList.add('password-mismatch');
+        passwordMessage.classList.remove('hide');
+    } else {
+        passwordInput.classList.remove('password-mismatch');
+        confirmPasswordInput.classList.remove('password-mismatch');
+        passwordMessage.classList.add('hide');
+    }
 }
 
 //

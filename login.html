@@ -57,7 +57,7 @@
                                 <div class="form-input login active">
                                     <input id="email" type="email" placeholder="user email" autocomplete="username">
                                     <input id="password" type="password" placeholder="user password" autocomplete="current-password">
-                                    <p class="loginMessage hide">The username or password you have entered is incorrect</p>
+                                    <p id="loginMessage" class="inputMessage hide">The username or password you have entered is incorrect</p>
                                     <button id="login" class="btn">Login</button>
                                 </div>
                             </form>
@@ -65,11 +65,9 @@
                                 <div class="form-input sign-up">
                                     <input id="ufullname" type="text" placeholder="please enter your fullname">
                                     <input id="uemail" type="email" placeholder="please enter your email" autocomplete="username">
-                                    <input id="upassword" type="password" name="password" placeholder="select a strong password" autocomplete="current-password">
-                                    <input id="uaddress1" type="text" placeholder="first line of your address">
-                                    <input id="ucity" type="text" placeholder="please enter your city">
-                                    <input id="upostcode" type="text" placeholder="please enter your postcode">
-                                    <p class="loginMessage2 hide">Please complete all of the fields</p>
+                                    <input id="upassword" type="password" name="password" placeholder="enter a password" autocomplete="current-password">
+                                    <input id="confirmPassword" type="password" name="confirmPassword" placeholder="confirm your password" autocomplete="new-password">
+                                    <p id="signupMessage" class="inputMessage hide">Please complete all of the fields</p>
                                     <button id="signup" class="btn">Sign-up</button>
                                 </div>
                             </form>
