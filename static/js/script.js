@@ -652,40 +652,38 @@ function hashPassword(password) {
 }
 
 // Function to handle the login process
-async function handleLogin(event) {
+function handleLogin(event) {
     event.preventDefault();
     // Get the entered email and password
     const enteredEmail = document.getElementById('email').value;
     const enteredPassword = document.getElementById('password').value;
     const passwordHash =  hashPassword(enteredPassword);
-    try {
-        const response = await fetch(`https://redstoreapi.onrender.com/api/v1/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: enteredEmail,
-                password: passwordHash
-            })
-        });
-
-        const responseData = await response.json();
-
-        if(response.ok) {
-            // If login is successful, redirect to homepage
-            window.location.href = './index.html';
-        } else {
-            // Display the loginMessage by removing the .hide class
-            const loginMessage = document.querySelector('#loginMessage');
-            loginMessage.classList.remove('hide')
-        }
-    } catch (error) {
+    
+    fetch(`http://127.0.0.1:5000/api/v1/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: enteredEmail,
+            password: passwordHash
+        })
+    })
+    .then(response => {
+        // Get the cookie value from the header
+        console.log(response);
+        return response.json();
+    })
+    .then(data => {
+        // Handle successful login response data
+        console.log(data);
+    })
+    .catch(error => {
         console.error('Error fetching user data:', error);
-    }
+    });
 }
 
-// Function to handle the signup process
+// Function to handle the signup process. It checks if all fields are completed. Functions are divided between handling sign-up and actual registration to allow for future improvement such as input validation.
 function handleSignup(event) {
     event.preventDefault();
     
@@ -701,6 +699,7 @@ function handleSignup(event) {
     }
 }
 
+// This function passes the input data vai API to the backend.
 function registration() {
     const firstName = document.querySelector('#ufname').value;
     const lastName = document.querySelector('#ulname').value;
@@ -722,7 +721,7 @@ function registration() {
     };
 
     // Make a POST request to the API
-    fetch('https://redstoreapi.onrender.com/api/v1/register', {
+    fetch('http://127.0.0.1:5000/api/v1/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
